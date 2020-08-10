@@ -7,6 +7,7 @@ import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import org.thymeleaf.TemplateEngine;
@@ -18,46 +19,73 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @WebServlet(urlPatterns = {"/"})
 public class ProductController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProductDao productDataStore = ProductDaoMem.getInstance();
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
+        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
-        String categoryId = req.getParameter("categoryId");
-        String supplierId = req.getParameter("supplierId");
-        if (categoryId != null) {
-            ProductCategory productCategory = productCategoryDataStore.find(Integer.parseInt(categoryId));
-            context.setVariable("products", productDataStore.getBy(productCategory));
-            context.setVariable("selectedCategory", productCategory);
-        } else if (supplierId != null) {
-            Supplier supplier = supplierDataStore.find(Integer.parseInt(supplierId));
-            context.setVariable("products", productDataStore.getBy(supplier));
-            context.setVariable("selectedCategory", supplier);
-        } else {
-            context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(1)));
-            context.setVariable("selectedCategory", productCategoryDataStore.find(1));
-        }
+        Object filterBy = getFilterBy(
+                req.getParameter("categoryId"),
+                req.getParameter("supplierId")
+        );
+        List<Product> products = getProductList(filterBy);
 
+        context.setVariable("products", products);
+        context.setVariable("filterBy", filterBy);
 
         context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", supplierDataStore.getAll());
 
         // // Alternative setting of the template context
-        // Map<String, Object> params = new HashMap<>();
-        // params.put("category", productCategoryDataStore.find(1));
-        // params.put("products", productDataStore.getBy(productCategoryDataStore.find(1)));
-        // context.setVariables(params);
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("products", products);
+//        params.put("filterBy", filterBy);
+//        params.put("categories", productCategoryDataStore.getAll());
+//        params.put("suppliers", supplierDataStore.getAll());
+//        context.setVariables(params);
+
         engine.process("product/index.html", context, resp.getWriter());
+    }
+
+    private Object getFilterBy(String categoryId, String supplierId) {
+
+        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+
+        int categoryIdNum = castStringToInt(categoryId);
+        int supplierIdNum = castStringToInt(supplierId);
+        if (categoryIdNum != 0) return productCategoryDataStore.find(categoryIdNum);
+        if (supplierIdNum != 0) return supplierDataStore.find(supplierIdNum);
+        return productCategoryDataStore.find(1);
+    }
+
+
+    private List<Product> getProductList(Object selectedCategory) {
+        ProductDao productDataStore = ProductDaoMem.getInstance();
+        if (selectedCategory instanceof ProductCategory) {
+            return productDataStore.getBy((ProductCategory) selectedCategory);
+        } else if (selectedCategory instanceof Supplier) {
+            return productDataStore.getBy((Supplier) selectedCategory);
+        }
+        return null;
+    }
+
+    private int castStringToInt(String text) {
+        int number = 0;
+        try {
+            number = Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            System.out.println("Can't parse " + text + " to number");
+        }
+        return number;
     }
 
 }
