@@ -24,23 +24,37 @@ public class Initializer implements ServletContextListener {
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
         //setting up a new supplier
-        Supplier amazon = new Supplier("Amazon", "Digital content and services");
-        supplierDataStore.add(amazon);
-        Supplier lenovo = new Supplier("Lenovo", "Computers");
-        supplierDataStore.add(lenovo);
-        Supplier java = new Supplier("Java", "Coffees");
+        Supplier nescafe = new Supplier("Nescafe", "For the moments that matter.");
+        supplierDataStore.add(nescafe);
+        Supplier tchibo = new Supplier("Tchibo", "A really good coffee.");
+        supplierDataStore.add(tchibo);
+        Supplier java = new Supplier("Java", "Write once, run anywhere :)");
         supplierDataStore.add(java);
+        Supplier starbucks = new Supplier("Starbucks", "Get together. Over coffee.");
+        supplierDataStore.add(starbucks);
 
         //setting up a new product category
-        ProductCategory coffee = new ProductCategory("Coffee", "Drink & Food", "Coffee is a brewed drink prepared from roasted coffee beans, the seeds of berries from certain Coffea species.");
-        ProductCategory tablet = new ProductCategory("Tablet", "Hardware", "A tablet computer, commonly shortened to tablet, is a thin, flat mobile computer with a touchscreen display.");
-        productCategoryDataStore.add(coffee);
-        productCategoryDataStore.add(tablet);
+        ProductCategory icedCoffee = new ProductCategory("Iced Coffee", "Coffee", "Iced coffees become very popular in the summer time due to its ice cubes in it :)");
+        ProductCategory espresso = new ProductCategory("Espresso", "Coffee", "Also known as a short black, is apr. one ounce of highly concentrated coffee.");
+        ProductCategory macchiato = new ProductCategory("Macchiato", "Coffee", "The word “macchiato” means mark or stain. This is in reference to the mark that steamed milk leaves on the surface of the espresso as it is dashed into the drink.");
+        ProductCategory cappuccino = new ProductCategory("Cappuccino", "Coffee", "A creamy coffee drink is with thick foam layer and additional flavorings that can be added to it.");
+        ProductCategory latte = new ProductCategory("Latte", "Coffee", "Cafe lattes are considered to be a coffee with a big amount of milk in the beverage. Flavoring syrups are added to the latte for those who enjoy sweeter drinks.");
+        productCategoryDataStore.add(icedCoffee);
+        productCategoryDataStore.add(espresso);
+        productCategoryDataStore.add(macchiato);
+        productCategoryDataStore.add(cappuccino);
+        productCategoryDataStore.add(latte);
 
         //setting up products and printing it
-        productDataStore.add(new Product("Ice Cold Cappuccino", 9.9f, "USD", "An ice cold cappucino developed our developer team.", coffee, java));
-        productDataStore.add(new Product("Amazon Fire", 49.9f, "USD", "Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support.", tablet, amazon));
-        productDataStore.add(new Product("Lenovo IdeaPad Miix 700", 479, "USD", "Keyboard cover is included. Fanless Core m5 processor. Full-size USB ports. Adjustable kickstand.", tablet, lenovo));
-        productDataStore.add(new Product("Amazon Fire HD 8", 89, "USD", "Amazon's latest Fire HD 8 tablet is a great value for media consumption.", tablet, amazon));
+        productDataStore.add(new Product("Ice Cold Cappuccino", 9.9f, "USD", "An ice cold cappuccino developed by our developer team.", icedCoffee, java));
+        productDataStore.add(new Product("Amazon Fire", 4.9f, "USD", "Fantastic reboot to your brain. Large content coffeine. Helpful technical support.", espresso, nescafe));
+        productDataStore.add(new Product("Codecoolers dream", 5.0f, "USD", "A sweet, bug safe drink to take a break.", cappuccino, tchibo));
+        productDataStore.add(new Product("Go To Cheers", 8.0f, "USD", "Take a break.", latte, tchibo ));
+        productDataStore.add(new Product("The cold roof", 5.9f, "USD", "When you believe compiler ignores all your comments.", icedCoffee, tchibo ));
+        productDataStore.add(new Product("PA vulcano", 6.0f, "USD", "When you really need the energy and the power.", macchiato, starbucks ));
+        productDataStore.add(new Product("Consultation friend", 8.0f, "USD", "A cold and sweet friend always.", icedCoffee, nescafe ));
+        productDataStore.add(new Product("JavaCode", 8.0f, "USD", "This is the java, if you don't know it, then google!", cappuccino, starbucks ));
+        productDataStore.add(new Product("Mentoring session", 6.0f, "USD", "A good coffee to develop in knowledge.", latte, nescafe ));
+        productDataStore.add(new Product("Demo break", 4.9f, "USD", "When you only have 5 minutes..:)", espresso, java ));
     }
 }
