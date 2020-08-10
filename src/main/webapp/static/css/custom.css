@@ -60,3 +60,17 @@
 {
     margin: 0 0 11px;
 }
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.item {
+    width: 200px;
+    min-height: 200px;
+    max-height: auto;
+    float: left;
+    margin: 3px;
+    padding: 3px;
+}
