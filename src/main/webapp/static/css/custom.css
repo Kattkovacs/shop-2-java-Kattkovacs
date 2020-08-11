@@ -61,6 +61,23 @@
     margin: 0 0 11px;
 }
 
+.jumbotron {
+    background-image: url("/static/img/beans_header.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+h1 {
+    color: beige;
+    font-size: 50px;
+    text-shadow: darkgray 2px 2px;
+}
+
+body {
+    background: -webkit-linear-gradient(top, #967259,#967259 30%, #ece0d1 30%, #ece0d1);
+}
+
 img {
     max-width: 100%;
     height: auto;
@@ -73,4 +90,12 @@ img {
     float: left;
     margin: 3px;
     padding: 3px;
+    background-position: center;
+}
+
+.navbar-icon {
+    max-height: 40px;
+    max-width: 30px;
+    position: center;
+    text-align: center;
 }
