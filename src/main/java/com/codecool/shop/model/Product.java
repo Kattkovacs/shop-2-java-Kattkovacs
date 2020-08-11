@@ -60,6 +60,10 @@ public class Product extends BaseModel {
         this.supplier.addProduct(this);
     }
 
+    public boolean isFilterable (Filterable filterBy) {
+        return this.supplier.equals(filterBy) || this.productCategory.equals(filterBy);
+    }
+
     @Override
     public String toString() {
         return String.format("id: %1$d, " +
