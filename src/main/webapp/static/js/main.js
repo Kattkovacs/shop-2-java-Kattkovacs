@@ -1,1 +1,7 @@
-alert("This is from JS");
+import { dom } from "./dom.js";
+
+function init() {
+    dom.init();
+}
+
+init();
