@@ -13,13 +13,36 @@ export let dom = {
         for (let button of buttons){
             button.addEventListener('click', dataHandler.addToCart.bind(
                 event,
-                dom.showResultPopUp,
+                dom.showResult,
                 button.getAttribute('product-id')));
         }
     },
 
-    showResultPopUp: function(response) {
-        alert("Test");
+    showResult: function(response) {
+        dom.showAlertPopup("Item added to chart successfully");
+    },
+
+    showAlertPopup: function(message) {
+        let alertDiv = document.createElement("div");
+        alertDiv.classList.add("alert", "alert-success", "fixed-top", "text-center");
+        alertDiv.setAttribute("id", "success-alert");
+        let dismissButton = document.createElement("button");
+        dismissButton.classList.add("close");
+        dismissButton.setAttribute("type", "button");
+        dismissButton.setAttribute("data-dismiss", "alert");
+        dismissButton.innerText="x";
+        let result = document.createElement("strong");
+        result.innerText = "Success!"
+        let alertText = document.createElement("div");
+        alertText.classList.add("alert-text");
+        alertText.innerText = message;
+        alertDiv.appendChild(dismissButton);
+        alertDiv.appendChild(result);
+        alertDiv.appendChild(alertText);
+        document.querySelector("body").appendChild(alertDiv);
+        setTimeout(() => {
+            document.querySelector("body").removeChild(alertDiv)
+        }, 3000)
     },
 
     addActionToQuantityButtons: function () {
