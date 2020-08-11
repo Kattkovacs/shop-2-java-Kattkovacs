@@ -27,6 +27,8 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- End of Bootstrap components -->
 
+    <script type="module" src="/static/js/main.js" defer></script>
+
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css"/>
     <link rel="shortcut icon" href="static/img/logo.png"/>
 </head>
@@ -59,7 +61,7 @@
                         <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
                     </div>
                     <div class="card-text">
-                        <a class="btn btn-success" href="#">Add to cart</a>
+                        <a class="btn btn-success add-to-cart" th:attr="product-id=${prod.id}">Add to cart</a>
                     </div>
                 </div>
             </div>
