@@ -7,6 +7,15 @@ export let dom = {
     },
 
     addActionToAddCartButtons: function() {
+        let buttons = document.querySelectorAll(".add-to-cart");
 
+        for (let button of buttons){
+            button.addEventListener('click', dataHandler.addToCart.bind(dom.showResultPopUp, button.getAttribute('product-id')));
+        }
+    },
+
+    showResultPopUp: function(response) {
+        alert("Test");
     }
+
 }
