@@ -7,31 +7,36 @@
     </div>
     <div id="cart" class="d-flex flex-column justify-content-center px-5 py-2">
         <div class="card product my-1" th:each="lineItem,iterStat : ${order.getLineItemList()}" th:attr="product-id=${lineItem.getProduct().getId()}">
-            <div class="col">
-                <img class="item" src="http://placehold.it/400x250/000/fff"
-                     th:attr="src='/static/img/product_' + ${lineItem.getProduct().getId()} + '.jpg'" alt=""/>
-                <div class="card-header">
-                    <h4 class="card-title" th:text="${lineItem.getProduct().getName()}">Product name</h4>
-                    <p class="card-text" th:text="${lineItem.getProduct().getDescription()}">Product description... </p>
+            <div class="d-flex">
+                <div class="image p-2">
+                    <img class="item m-0" src="http://placehold.it/400x250/000/fff"
+                         th:attr="src='/static/img/product_' + ${lineItem.getProduct().getId()} + '.jpg'" alt=""/>
                 </div>
-                <div class="card-body d-flex justify-content-around align-items-center">
-                    <div class="card-text product-price" th:text="${lineItem.getTotalProductPrice()}">
-                        100 USD
+                <div class="d-flex flex-column justify-content-center w-100">
+                    <div class="card-header">
+                        <h4 class="card-title" th:text="${lineItem.getProduct().getName()}">Product name</h4>
+                        <p class="card-text" th:text="${lineItem.getProduct().getDescription()}">Product description... </p>
                     </div>
-                    <div class="card-text">
-                        <div class="quantity" style="display: block;text-align:center;margin-bottom:5px;margin-top:5px">
-                            <div style="display: inline-block;color:gray">
-                                Quantity
+                    <div class="card-body d-flex justify-content-around align-items-center">
+                        <div class="fix-width card-text product-price" th:text="${lineItem.getTotalProductPrice()}">
+                            100 USD
+                        </div>
+                        <div class="fix-width card-text">
+                            <div class="quantity" style="display: block;text-align:center;margin-bottom:5px;margin-top:5px">
+                                <div style="display: inline-block;color:gray">
+                                    Quantity
+                                </div>
+                                <button class="btn btn-sm btn-success mx-2 minus">-</button>
+                                <span class="quantity-number" th:text="${lineItem.getQuantity()}">Pcs</span>
+                                <button class="btn btn-sm btn-success mx-2 plus">+</button>
                             </div>
-                            <button class="btn btn-sm btn-success mx-2 minus">-</button>
-                            <span class="quantity-number" th:text="${lineItem.getQuantity()}">Pcs</span>
-                            <button class="btn btn-sm btn-success mx-2 plus">+</button>
+                        </div>
+                        <div class="fix-width card-text">
+                            TODO: remove
                         </div>
                     </div>
-                    <div class="card-text">
-                        TODO: remove
-                    </div>
                 </div>
+
             </div>
         </div>
     </div>
