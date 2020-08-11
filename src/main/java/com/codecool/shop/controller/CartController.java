@@ -4,9 +4,11 @@ import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dao.implementation.OrderDaoMem;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
+import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.LineItem;
 import com.codecool.shop.model.Order;
 import org.thymeleaf.TemplateEngine;
@@ -28,19 +30,22 @@ public class CartController extends HttpServlet {
             OrderDao orderDataStore = OrderDaoMem.getInstance();
             ProductDao productDataStore = ProductDaoMem.getInstance();
             Order order = orderDataStore.find(req.getSession().getId());
-            System.out.println(order);
             order.addToCart(new LineItem(
                     productDataStore.find(Integer.parseInt(req.getParameter("add"))),
                     order
             ));
-            System.out.println(order);
         }
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
+        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+        OrderDao orderDataStore = OrderDaoMem.getInstance();
 
-
-
-        //engine.process("product/cart.html", context, resp.getWriter());
+        context.setVariable("order", orderDataStore.find(req.getSession().getId()));
+        context.setVariable("page", "cart");
+        context.setVariable("categories", productCategoryDataStore.getAll());
+        context.setVariable("suppliers", supplierDataStore.getAll());
+        engine.process("product/index.html", context, resp.getWriter());
     }
 }

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="copy">
+    <div class="card">
+        <strong>Your cart</strong>
+    </div>
+    <div id="cart" class="row">
+        <div class="col col-sm-12 col-md-6 col-lg-4" th:each="lineItem,iterStat : ${order.getLineItemList()}">
+            <div class="card">
+                <img class="item" src="http://placehold.it/400x250/000/fff"
+                     th:attr="src='/static/img/product_' + ${lineItem.getProduct().getId()} + '.jpg'" alt=""/>
+                <div class="card-header">
+                    <h4 class="card-title" th:text="${lineItem.getProduct().getName()}">Product name</h4>
+                    <p class="card-text" th:text="${lineItem.getProduct().getDescription()}">Product description... </p>
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <p class="lead" th:text="${lineItem.getProduct().getPrice()}">100 USD</p>
+                    </div>
+                    <div class="card-text">
+                        <div style="display: block;text-align:center;margin-bottom:5px;margin-top:5px">
+                            <div style="display: inline-block;color:gray">
+                                Quantity
+                            </div>
+
+                            <button class="btn btn-sm btn-success mx-2">-</button>
+                            <span th:text="${lineItem.getQuantity()}">Pcs</span>
+                            <button class="btn btn-sm btn-success mx-2">+</button>
+                        </div>
+
+<!--                        <p class="lead" th:text="${lineItem.getQuantity()}">piece</p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
