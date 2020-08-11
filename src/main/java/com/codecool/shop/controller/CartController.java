@@ -26,21 +26,30 @@ public class CartController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        OrderDao orderDataStore = OrderDaoMem.getInstance();
+        ProductDao productDataStore = ProductDaoMem.getInstance();
+        Order order = orderDataStore.find(req.getSession().getId());
         if (req.getParameter("add") != null) {
-            OrderDao orderDataStore = OrderDaoMem.getInstance();
-            ProductDao productDataStore = ProductDaoMem.getInstance();
-            Order order = orderDataStore.find(req.getSession().getId());
             order.addToCart(new LineItem(
                     productDataStore.find(Integer.parseInt(req.getParameter("add"))),
                     order
             ));
         }
 
+        if (req.getParameter("increment") != null) {
+            LineItem lineItem = order.getLineItem(Integer.parseInt(req.getParameter("increment")));
+            lineItem.incrementQuantity();
+        }
+
+        if (req.getParameter("decrement") != null) {
+            LineItem lineItem = order.getLineItem(Integer.parseInt(req.getParameter("decrement")));
+            lineItem.decrementQuantity();
+        }
+
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
 
         context.setVariable("order", orderDataStore.find(req.getSession().getId()));
         context.setVariable("page", "cart");

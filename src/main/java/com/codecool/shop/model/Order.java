@@ -29,4 +29,6 @@ public class Order {
     public UserDetails getUserDetails() {
         return userDetails;
     }
+
+    public LineItem getLineItem(Integer productId) { return lineItemList.get(productId); }
 }

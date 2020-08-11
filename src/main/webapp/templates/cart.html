@@ -19,14 +19,13 @@
                         <p class="lead" th:text="${lineItem.getProduct().getPrice()}">100 USD</p>
                     </div>
                     <div class="card-text">
-                        <div style="display: block;text-align:center;margin-bottom:5px;margin-top:5px">
+                        <div class="quantity" th:attr="product-id=${lineItem.getProduct().getId()}" style="display: block;text-align:center;margin-bottom:5px;margin-top:5px">
                             <div style="display: inline-block;color:gray">
                                 Quantity
                             </div>
-
-                            <button class="btn btn-sm btn-success mx-2">-</button>
-                            <span th:text="${lineItem.getQuantity()}">Pcs</span>
-                            <button class="btn btn-sm btn-success mx-2">+</button>
+                            <button class="btn btn-sm btn-success mx-2 minus">-</button>
+                            <span class="quantity-number" th:text="${lineItem.getQuantity()}">Pcs</span>
+                            <button class="btn btn-sm btn-success mx-2 plus">+</button>
                         </div>
 
 <!--                        <p class="lead" th:text="${lineItem.getQuantity()}">piece</p>-->
