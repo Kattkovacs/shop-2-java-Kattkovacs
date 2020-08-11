@@ -34,11 +34,11 @@ export let dataHandler = {
     init: function () {
     },
 
-    addToCart: function (callback, productId) {
+    addToCart: function (callback, productId, event) {
         let url = `/cart?add=${productId}`
         dataHandler._get(url, (response) => {
-            this._data = response;
-            console.log(callback);
+            dataHandler._data = response;
+            console.log(event, callback, productId);
             callback(response)
         });
     }

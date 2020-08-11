@@ -10,7 +10,10 @@ export let dom = {
         let buttons = document.querySelectorAll(".add-to-cart");
 
         for (let button of buttons){
-            button.addEventListener('click', dataHandler.addToCart.bind(dom.showResultPopUp, button.getAttribute('product-id')));
+            button.addEventListener('click', dataHandler.addToCart.bind(
+                event,
+                dom.showResultPopUp,
+                button.getAttribute('product-id')));
         }
     },
 
