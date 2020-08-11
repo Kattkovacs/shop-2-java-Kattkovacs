@@ -7,6 +7,7 @@ import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.model.Filterable;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
@@ -32,7 +33,7 @@ public class ProductController extends HttpServlet {
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
-        Object filterBy = getFilterBy(
+        Filterable filterBy = getFilterBy(
                 req.getParameter("categoryId"),
                 req.getParameter("supplierId")
         );
@@ -55,7 +56,7 @@ public class ProductController extends HttpServlet {
         engine.process("product/index.html", context, resp.getWriter());
     }
 
-    private Object getFilterBy(String categoryId, String supplierId) {
+    private Filterable getFilterBy(String categoryId, String supplierId) {
 
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
@@ -68,14 +69,9 @@ public class ProductController extends HttpServlet {
     }
 
 
-    private List<Product> getProductList(Object selectedCategory) {
+    private List<Product> getProductList(Filterable filterBy) {
         ProductDao productDataStore = ProductDaoMem.getInstance();
-        if (selectedCategory instanceof ProductCategory) {
-            return productDataStore.getBy((ProductCategory) selectedCategory);
-        } else if (selectedCategory instanceof Supplier) {
-            return productDataStore.getBy((Supplier) selectedCategory);
-        }
-        return null;
+        return productDataStore.getBy(filterBy);
     }
 
     private int castStringToInt(String text) {
