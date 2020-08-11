@@ -33,6 +33,6 @@ public class LineItem {
 
     public void decrementQuantity() {
         quantity--;
-        if (quantity <= 0) order.removeFromCart(this);
+        if (quantity <= 0) order.removeFromCart(product.getId());
     }
 }

@@ -102,6 +102,10 @@ img {
     text-align: center;
 }
 
+.card-header {
+    min-height: 120px;
+}
+
 #products {
     margin-top: 10px;
 }

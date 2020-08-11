@@ -18,8 +18,8 @@ public class Order {
         }
     }
 
-    public void removeFromCart(LineItem lineItem) {
-        lineItemList.remove(lineItem);
+    public void removeFromCart(Integer productId) {
+        lineItemList.remove(productId);
     }
 
     public List<LineItem> getLineItemList() {
@@ -29,4 +29,6 @@ public class Order {
     public UserDetails getUserDetails() {
         return userDetails;
     }
+
+    public LineItem getLineItem(Integer productId) { return lineItemList.get(productId); }
 }

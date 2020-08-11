@@ -42,31 +42,8 @@
 </div>
 
 <div class="container">
-    <div class="card text-center">
-        <strong th:text="${filterBy.getName()}">Category Title</strong>
-        <p class="card-text" th:text="${filterBy.description}">Filter description... </p>
-    </div>
 
-    <div id="products" class="row">
-        <div class="col col-sm-12 col-md-6 col-lg-4" th:each="prod,iterStat : ${products}">
-            <div class="card">
-                <img class="item" src="http://placehold.it/400x250/000/fff"
-                     th:attr="src='/static/img/product_' + ${prod.id} + '.jpg'" alt=""/>
-                <div class="card-header">
-                    <h4 class="card-title" th:text="${prod.name}">Product name</h4>
-                    <p class="card-text" th:text="${prod.description}">Product description... </p>
-                </div>
-                <div class="card-body">
-                    <div class="card-text">
-                        <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
-                    </div>
-                    <div class="card-text">
-                        <a class="btn btn-success add-to-cart" th:attr="product-id=${prod.id}">Add to cart</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div th:replace="${page} + '.html' :: copy"></div>
 
 </div>
 

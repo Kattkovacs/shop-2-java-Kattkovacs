@@ -38,7 +38,22 @@ export let dataHandler = {
         let url = `/cart?add=${productId}`
         dataHandler._get(url, (response) => {
             dataHandler._data = response;
-            console.log(event, callback, productId);
+            callback(response)
+        });
+    },
+
+    decrementQuantity: function (callback, productId, event) {
+        let url = `/cart?decrement=${productId}`
+        dataHandler._api_get(url, (response) => {
+            dataHandler._data = response;
+            callback(response)
+        });
+    },
+
+    incrementQuantity: function (callback, productId, event) {
+        let url = `/cart?increment=${productId}`
+        dataHandler._api_get(url, (response) => {
+            dataHandler._data = response;
             callback(response)
         });
     }
