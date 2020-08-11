@@ -44,17 +44,17 @@ export let dataHandler = {
 
     decrementQuantity: function (callback, productId, event) {
         let url = `/cart?decrement=${productId}`
-        dataHandler._get(url, (response) => {
+        dataHandler._api_get(url, (response) => {
             dataHandler._data = response;
-            callback(response, productId)
+            callback(response)
         });
     },
 
     incrementQuantity: function (callback, productId, event) {
         let url = `/cart?increment=${productId}`
-        dataHandler._get(url, (response) => {
+        dataHandler._api_get(url, (response) => {
             dataHandler._data = response;
-            callback(response, productId)
+            callback(response)
         });
     }
 }

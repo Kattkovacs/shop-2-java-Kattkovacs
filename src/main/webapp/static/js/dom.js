@@ -23,35 +23,35 @@ export let dom = {
     },
 
     addActionToQuantityButtons: function () {
-        let quantities = document.querySelectorAll(".quantity");
+        let quantities = document.querySelectorAll(".product");
         for (let quantity of quantities){
             let productId = quantity.getAttribute("product-id");
             let decrementButton = quantity.querySelector(".minus");
             let incrementButton = quantity.querySelector(".plus");
             decrementButton.addEventListener('click', dataHandler.decrementQuantity.bind(
                 event,
-                dom.decrementQuantity,
+                dom.modifyCart,
                 productId
             ));
             incrementButton.addEventListener('click', dataHandler.incrementQuantity.bind(
                 event,
-                dom.incrementQuantity,
+                dom.modifyCart,
                 productId
             ));
         }
     },
 
-    decrementQuantity: function (response, productId) {
-        let quantity = document.querySelector(`[product-id="${productId}"]`);
-        let number = quantity.querySelector(".quantity-number");
-        number.innerText = parseInt(number.innerText) - 1;
+    modifyCart: function (response) {
+        let productDiv = document.querySelector(`[product-id="${response['productId']}"]`);
+        console.log(response)
+        if (response["quantity"] <= 0) {
+            let cart = document.querySelector("#cart");
+            cart.removeChild(productDiv);
+            return;
+        }
+        productDiv.querySelector(".quantity-number").innerText = response["quantity"];
+        productDiv.querySelector(".product-price").innerText = response["totalProductPrice"]
     },
-
-    incrementQuantity: function (response, productId) {
-        let quantity = document.querySelector(`[product-id="${productId}"]`);
-        let number = quantity.querySelector(".quantity-number");
-        number.innerText = parseInt(number.innerText) + 1;
-    }
 }
 
 

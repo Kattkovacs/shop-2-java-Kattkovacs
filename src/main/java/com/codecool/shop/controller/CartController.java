@@ -11,6 +11,8 @@ import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.LineItem;
 import com.codecool.shop.model.Order;
+import com.codecool.shop.model.json.LineItemUpdatesJson;
+import com.google.gson.Gson;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = {"/cart"})
 public class CartController extends HttpServlet {
@@ -39,11 +42,25 @@ public class CartController extends HttpServlet {
         if (req.getParameter("increment") != null) {
             LineItem lineItem = order.getLineItem(Integer.parseInt(req.getParameter("increment")));
             lineItem.incrementQuantity();
+            String responseString = new Gson().toJson(new LineItemUpdatesJson(lineItem));
+            PrintWriter out = resp.getWriter();
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            out.print(responseString);
+            out.flush();
+            return;
         }
 
         if (req.getParameter("decrement") != null) {
             LineItem lineItem = order.getLineItem(Integer.parseInt(req.getParameter("decrement")));
             lineItem.decrementQuantity();
+            String responseString = new Gson().toJson(new LineItemUpdatesJson(lineItem));
+            PrintWriter out = resp.getWriter();
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            out.print(responseString);
+            out.flush();
+            return;
         }
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());

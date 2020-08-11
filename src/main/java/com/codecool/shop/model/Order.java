@@ -18,8 +18,8 @@ public class Order {
         }
     }
 
-    public void removeFromCart(LineItem lineItem) {
-        lineItemList.remove(lineItem);
+    public void removeFromCart(Integer productId) {
+        lineItemList.remove(productId);
     }
 
     public List<LineItem> getLineItemList() {

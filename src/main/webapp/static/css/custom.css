@@ -99,3 +99,7 @@ img {
     position: center;
     text-align: center;
 }
+
+.card-header {
+    min-height: 120px;
+}
