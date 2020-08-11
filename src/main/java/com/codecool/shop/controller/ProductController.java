@@ -75,6 +75,7 @@ public class ProductController extends HttpServlet {
     }
 
     private int castStringToInt(String text) {
+        if (text == null) return 0;
         int number = 0;
         try {
             number = Integer.parseInt(text);
