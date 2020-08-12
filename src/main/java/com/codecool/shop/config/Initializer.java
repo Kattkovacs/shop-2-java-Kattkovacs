@@ -36,7 +36,7 @@ public class Initializer implements ServletContextListener {
         //setting up a new product category
         ProductCategory icedCoffee = new ProductCategory("Iced Coffee", "Coffee", "Iced coffees become very popular in the summer time due to its ice cubes in it :)");
         ProductCategory espresso = new ProductCategory("Espresso", "Coffee", "Also known as a short black, is apr. one ounce of highly concentrated coffee.");
-        ProductCategory macchiato = new ProductCategory("Macchiato", "Coffee", "The word “macchiato” means mark or stain. This is in reference to the mark that steamed milk leaves on the surface of the espresso as it is dashed into the drink.");
+        ProductCategory macchiato = new ProductCategory("Macchiato", "Coffee", "The word macchiato means mark or stain. This is in reference to the mark that steamed milk leaves on the surface of the espresso as it is dashed into the drink.");
         ProductCategory cappuccino = new ProductCategory("Cappuccino", "Coffee", "A creamy coffee drink is with thick foam layer and additional flavorings that can be added to it.");
         ProductCategory latte = new ProductCategory("Latte", "Coffee", "Cafe lattes are considered to be a coffee with a big amount of milk in the beverage. Flavoring syrups are added to the latte for those who enjoy sweeter drinks.");
         productCategoryDataStore.add(icedCoffee);
