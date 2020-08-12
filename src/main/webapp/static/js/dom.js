@@ -5,6 +5,7 @@ export let dom = {
     init: function () {
         dom.addActionToAddCartButtons();
         dom.addActionToQuantityButtons();
+        dom.isEmptyCart();
     },
 
     addActionToAddCartButtons: function() {
@@ -70,11 +71,34 @@ export let dom = {
         if (response["quantity"] <= 0) {
             let cart = document.querySelector("#cart");
             cart.removeChild(productDiv);
+            dom.isEmptyCart()
             return;
         }
         productDiv.querySelector(".quantity-number").innerText = response["quantity"];
         productDiv.querySelector(".product-price").innerText = response["totalProductPrice"]
     },
+
+    isEmptyCart: function () {
+        let cart = document.querySelector("#cart");
+        if (cart == null) return false;
+        let productsNumber = cart.querySelectorAll(".product").length
+        if (productsNumber > 0) return false
+        dom.showEmptyCartMessage(cart)
+        return true;
+    },
+
+    showEmptyCartMessage: function (cart) {
+        let empty = document.createElement("div");
+        empty.classList.add("card", "p-3", "text-center");
+        let text = document.createElement("strong");
+        text.innerText = "Your cart is empty!";
+        let link = document.createElement("a");
+        link.setAttribute("href", "/");
+        link.innerText = "Click here to start shopping";
+        empty.appendChild(text);
+        empty.appendChild(link);
+        cart.appendChild(empty);
+    }
 }
 
 
