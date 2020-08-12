@@ -56,5 +56,13 @@ export let dataHandler = {
             dataHandler._data = response;
             callback(response)
         });
+    },
+
+    removeLineItem: function (callback, productId, event) {
+        let url = `\cart?remove=${productId}`
+        dataHandler._api_get(url, (response) => {
+            dataHandler._data = response;
+            callback(response)
+        });
     }
 }

@@ -19,6 +19,10 @@ public class LineItem {
         return String.valueOf(getTotalProductPriceInFloat()) + " " + product.getDefaultCurrency().toString();
     }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public Product getProduct() {
         return product;
     }

@@ -6,29 +6,41 @@ import java.util.List;
 import java.util.Map;
 
 public class Order {
-    private Map<Integer, LineItem> lineItemList = new HashMap<>();
+    private Map<Integer, LineItem> lineItemMap = new HashMap<>();
     private UserDetails userDetails;
 
     public void addToCart(LineItem lineItem) {
         int id = lineItem.getProduct().getId();
-        if (!lineItemList.containsKey(id)){
-            lineItemList.put(id, lineItem);
+        if (!lineItemMap.containsKey(id)){
+            lineItemMap.put(id, lineItem);
         } else {
-            lineItemList.get(id).incrementQuantity();
+            lineItemMap.get(id).incrementQuantity();
         }
     }
 
     public void removeFromCart(Integer productId) {
-        lineItemList.remove(productId);
+        lineItemMap.remove(productId);
     }
 
     public List<LineItem> getLineItemList() {
-        return new ArrayList<LineItem>(lineItemList.values());
+        return new ArrayList<LineItem>(lineItemMap.values());
     }
 
     public UserDetails getUserDetails() {
         return userDetails;
     }
 
-    public LineItem getLineItem(Integer productId) { return lineItemList.get(productId); }
+    public LineItem getLineItem(Integer productId) { return lineItemMap.get(productId); }
+
+    public float getTotalOrderPriceInFloat(){
+        float totalPrice = 0;
+        for (LineItem item: getLineItemList()) {
+          totalPrice += item.getTotalProductPriceInFloat();
+        }
+        return totalPrice;
+    }
+
+    public String getTotalOrderPrice() {
+        return String.valueOf(getTotalOrderPriceInFloat()) + " USD";
+    }
 }
