@@ -84,8 +84,6 @@ img {
 }
 
 .item {
-    width: 200px;
-    min-height: 200px;
     max-height: auto;
     float: left;
     position: center;
