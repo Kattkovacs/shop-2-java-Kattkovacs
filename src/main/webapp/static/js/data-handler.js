@@ -1,4 +1,6 @@
+import { dom } from "./dom.js";
 export let dataHandler = {
+
 
     _data: {},
 
@@ -59,10 +61,24 @@ export let dataHandler = {
     },
 
     removeLineItem: function (callback, productId, event) {
-        let url = `\cart?remove=${productId}`
+        let url = `/cart?remove=${productId}`
         dataHandler._api_get(url, (response) => {
             dataHandler._data = response;
             callback(response)
+        });
+    },
+
+    checkout: function (callback, event) {
+        let url = `/userform`
+        dataHandler._get(url, (response) => {
+            dataHandler._data = response;
+            callback(response).then(
+                function(data) {
+                    dom.openUserDataForm(data)
+                }).catch(function(error){
+                    alert(error);
+                }
+            )
         });
     }
 }
