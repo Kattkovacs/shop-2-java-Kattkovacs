@@ -52,6 +52,7 @@ export let dom = {
             let productId = quantity.getAttribute("product-id");
             let decrementButton = quantity.querySelector(".minus");
             let incrementButton = quantity.querySelector(".plus");
+            let removeButton = quantity.querySelector(".remove-button");
             decrementButton.addEventListener('click', dataHandler.decrementQuantity.bind(
                 event,
                 dom.modifyCart,
@@ -62,12 +63,17 @@ export let dom = {
                 dom.modifyCart,
                 productId
             ));
+            removeButton.addEventListener('click', dataHandler.removeLineItem.bind(
+                event,
+                dom.modifyCart,
+                productId
+            ));
         }
     },
 
     modifyCart: function (response) {
         let productDiv = document.querySelector(`[product-id="${response['productId']}"]`);
-        console.log(response)
+        dom.modifyTotalPrice(response["totalOrderPrice"]);
         if (response["quantity"] <= 0) {
             let cart = document.querySelector("#cart");
             cart.removeChild(productDiv);
@@ -75,7 +81,12 @@ export let dom = {
             return;
         }
         productDiv.querySelector(".quantity-number").innerText = response["quantity"];
-        productDiv.querySelector(".product-price").innerText = response["totalProductPrice"]
+        productDiv.querySelector(".product-price").innerText = response["totalProductPrice"];
+    },
+
+    modifyTotalPrice: function (price) {
+        let totalPrice = document.querySelector(".total-price");
+        totalPrice.innerText = price;
     },
 
     isEmptyCart: function () {
@@ -83,6 +94,7 @@ export let dom = {
         if (cart == null) return false;
         let productsNumber = cart.querySelectorAll(".product").length
         if (productsNumber > 0) return false
+        dom.disableCheckoutButton()
         dom.showEmptyCartMessage(cart)
         return true;
     },
@@ -98,6 +110,11 @@ export let dom = {
         empty.appendChild(text);
         empty.appendChild(link);
         cart.appendChild(empty);
+    },
+
+    disableCheckoutButton: function () {
+        let checkout = document.querySelector(".checkout-button");
+        checkout.disabled = true;
     }
 }
 

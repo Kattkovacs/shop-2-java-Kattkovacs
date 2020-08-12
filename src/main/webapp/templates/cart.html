@@ -35,7 +35,7 @@
                             </div>
                         </div>
                         <div class="fix-width card-text">
-                            <button class="btn btn-success checkout-button">Remove</button>
+                            <button class="btn btn-success remove-button">Remove</button>
                         </div>
                     </div>
                 </div>
@@ -43,12 +43,12 @@
             </div>
         </div>
     </div>
-    <div class="checkout card text-center p-1">
-        <div class="total-price">
-            <strong class="card-title">Total Price:</strong>
-            <div th:text="${order.getTotalOrderPriceInFloat()} + ' USD'"></div>
+    <div class="checkout card text-center p-2 flex-row d-flex justify-content-around align-items-center">
+        <div class="d-flex fix-width justify-content-center align-items-center">
+            <strong class="px-2">Total Price: </strong>
+            <div class="total-price" th:text="${order.getTotalOrderPriceInFloat()} + ' USD'"></div>
         </div>
-        <div>
+        <div class="fix-width">
             <button class="btn btn-success checkout-button">Checkout</button>
         </div>
     </div>

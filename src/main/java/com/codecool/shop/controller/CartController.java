@@ -42,7 +42,7 @@ public class CartController extends HttpServlet {
         if (req.getParameter("increment") != null) {
             LineItem lineItem = order.getLineItem(Integer.parseInt(req.getParameter("increment")));
             lineItem.incrementQuantity();
-            String responseString = new Gson().toJson(new LineItemUpdatesJson(lineItem));
+            String responseString = new Gson().toJson(new LineItemUpdatesJson(lineItem, order));
             PrintWriter out = resp.getWriter();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
@@ -54,7 +54,20 @@ public class CartController extends HttpServlet {
         if (req.getParameter("decrement") != null) {
             LineItem lineItem = order.getLineItem(Integer.parseInt(req.getParameter("decrement")));
             lineItem.decrementQuantity();
-            String responseString = new Gson().toJson(new LineItemUpdatesJson(lineItem));
+            String responseString = new Gson().toJson(new LineItemUpdatesJson(lineItem, order));
+            PrintWriter out = resp.getWriter();
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            out.print(responseString);
+            out.flush();
+            return;
+        }
+
+        if (req.getParameter("remove") != null) {
+            LineItem lineItem = order.getLineItem(Integer.parseInt(req.getParameter("remove")));
+            lineItem.setQuantity(0);
+            order.removeFromCart(Integer.parseInt(req.getParameter("remove")));
+            String responseString = new Gson().toJson(new LineItemUpdatesJson(lineItem, order));
             PrintWriter out = resp.getWriter();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
