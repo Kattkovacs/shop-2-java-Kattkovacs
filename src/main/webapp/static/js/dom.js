@@ -122,15 +122,21 @@ export let dom = {
         let checkoutButton = document.querySelector(".checkout-button");
         checkoutButton.addEventListener('click', dataHandler.checkout.bind(
             event,
-            dom.openUserDataForm,
+            dom.convertUserDataForm,
         ));
 
     },
 
-    openUserDataForm: function(response) {
+    convertUserDataForm: function(response) {
         return response.text();
-    }
+    },
 
+    openUserDataForm: function (data) {
+        $('#modal').modal();
+        let modal = document.querySelector("#modal");
+        modal.querySelector(".modal-body").innerHTML = data;
+        modal.querySelector(".modal-title").innerText = "Please provide your data.";
+    }
 
 }
 

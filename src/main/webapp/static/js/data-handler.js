@@ -1,4 +1,6 @@
+import { dom } from "./dom.js";
 export let dataHandler = {
+
 
     _data: {},
 
@@ -72,8 +74,7 @@ export let dataHandler = {
             dataHandler._data = response;
             callback(response).then(
                 function(data) {
-                    console.log(data)
-                    document.querySelector("#test").innerHTML=data;
+                    dom.openUserDataForm(data)
                 }).catch(function(error){
                     alert(error);
                 }
