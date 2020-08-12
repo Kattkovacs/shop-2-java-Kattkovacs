@@ -6,6 +6,7 @@ export let dom = {
         dom.addActionToAddCartButtons();
         dom.addActionToQuantityButtons();
         dom.isEmptyCart();
+        dom.addActionToAddCheckoutButton()
     },
 
     addActionToAddCartButtons: function() {
@@ -115,7 +116,22 @@ export let dom = {
     disableCheckoutButton: function () {
         let checkout = document.querySelector(".checkout-button");
         checkout.disabled = true;
+    },
+
+    addActionToAddCheckoutButton: function() {
+        let checkoutButton = document.querySelector(".checkout-button");
+        checkoutButton.addEventListener('click', dataHandler.checkout.bind(
+            event,
+            dom.openUserDataForm,
+        ));
+
+    },
+
+    openUserDataForm: function(response) {
+        return response.text();
     }
+
+
 }
 
 
