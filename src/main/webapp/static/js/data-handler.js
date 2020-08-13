@@ -80,7 +80,7 @@ export let dataHandler = {
     },
 
     checkout: function (callback, event) {
-        let url = `/userform`
+        let url = `/checkout`
         dataHandler._get(url, (response) => {
             dataHandler._data = response;
             callback(response).then(
@@ -95,12 +95,40 @@ export let dataHandler = {
 
 
     saveUserDetail: function (callback, formData) {
-        let url = `/userform`
+        let url = `/checkout`
         dataHandler._post(url, formData, (response) => {
             dataHandler._data = response;
             callback(response).then(
                 function(data) {
                     dom.openReviewPage(data)
+                }).catch(function(error){
+                    alert(error);
+                }
+            )
+        });
+    },
+
+    goToPayment: function (callback) {
+        let url = `/payment`
+        dataHandler._get(url, (response) => {
+            dataHandler._data = response;
+            callback(response).then(
+                function(data) {
+                    dom.openPaymentPage(data)
+                }).catch(function(error){
+                    alert(error);
+                }
+            )
+        });
+    },
+
+    pay: function (callback, formData) {
+        let url = `/payment`
+        dataHandler._post(url, formData, (response) => {
+            dataHandler._data = response;
+            callback(response).then(
+                function(data) {
+                    dom.openResultPage(data)
                 }).catch(function(error){
                     alert(error);
                 }

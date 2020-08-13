@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.stream.Collectors;
 
-@WebServlet(urlPatterns = {"/userform"})
-public class UserFormController extends HttpServlet {
+@WebServlet(urlPatterns = {"/checkout"})
+public class CheckoutController extends HttpServlet {
 
 
     @Override
@@ -35,6 +35,7 @@ public class UserFormController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("userDetails", userDetails);
+        context.setVariable("order", order);
         engine.process("review.html", context, resp.getWriter());
     }
 

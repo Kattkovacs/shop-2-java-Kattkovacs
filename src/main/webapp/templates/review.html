@@ -10,7 +10,7 @@
     <tbody>
     <tr>
         <td>Name</td>
-        <td th:text="${userDetails.getFirstName() + userDetails.getLastName()}"></td>
+        <td th:text="${userDetails.getFirstName() + ' ' + userDetails.getLastName()}"></td>
     </tr>
     <tr>
         <td>Email</td>
@@ -57,21 +57,25 @@
 <h4>Your cart</h4>
 <table class="table">
     <thead class="thead-dark">
-    <tr>
-<!--        <th scope="col"></th>-->
-        <th scope="col">Product name</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Price</th>
-    </tr>
+        <tr>
+            <th scope="col">Product name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+        </tr>
     </thead>
     <tbody>
-    <tr th:each="lineItem,iterStat : ${order.getLineItemList()}">
-<!--        <th scope="row">1</th>-->
-        <td th:text="${lineItem.getProduct().getName()}"></td>
-        <td th:text="${lineItem.getQuantity()}"></td>
-        <td th:text="${lineItem.getTotalProductPrice()} + ' USD'"></td>
-    </tr>
-
-    <tr th:text="${order.getTotalOrderPriceInFloat()} + ' USD'> </tr>
+        <tr th:each="lineItem,iterStat : ${order.getLineItemList()}">
+            <td th:text="${lineItem.getProduct().getName()}"></td>
+            <td th:text="${lineItem.getQuantity()}"></td>
+            <td th:text="${lineItem.getTotalProductPrice()}"></td>
+        </tr>
     </tbody>
+</table>
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">Total Price:</th>
+        <th scope="col" th:text="${order.getTotalOrderPrice()}"></th>
+    </tr>
+    </thead>
 </table>

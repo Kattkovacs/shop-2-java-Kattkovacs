@@ -44,7 +44,8 @@ export let dom = {
         alertDiv.appendChild(alertText);
         document.querySelector("body").appendChild(alertDiv);
         setTimeout(() => {
-            document.querySelector("body").removeChild(alertDiv)
+            let body = document.querySelector("body")
+            if (body.contains(alertDiv)) body.removeChild(alertDiv);
         }, 3000)
     },
 
@@ -121,14 +122,14 @@ export let dom = {
 
     addActionToAddCheckoutButton: function() {
         let checkoutButton = document.querySelector(".checkout-button");
+        if (checkoutButton == null) return;
         checkoutButton.addEventListener('click', dataHandler.checkout.bind(
             event,
-            dom.convertUserDataForm,
+            dom.convertPage,
         ));
-
     },
 
-    convertUserDataForm: function(response) {
+    convertPage: function(response) {
         return response.text();
     },
 
@@ -140,7 +141,8 @@ export let dom = {
         let saveButton = document.querySelector(".save-button");
         $('#modal').modal();
         saveButton.addEventListener('click',
-            () => {
+            function eventListener() {
+                saveButton.removeEventListener('click', eventListener)
                 if (!$('#form')[0].checkValidity()) {
                     console.log("Not valid")
                     return
@@ -153,17 +155,12 @@ export let dom = {
                     object[key] = value;
                 });
                 dataHandler.saveUserDetail(
-                    dom.convertReviewPage,
+                    dom.convertPage,
                     object
                 )
             }
-
-)
+        )
     },
-    convertReviewPage: function(response) {
-        return response.text();
-    },
-
 
     openReviewPage: function(data) {
         dom.activateModal();
@@ -171,11 +168,21 @@ export let dom = {
         modal.querySelector(".modal-body").innerHTML = data;
         modal.querySelector(".modal-title").innerText = "Please review your order details";
         let saveButton = document.querySelector(".save-button");
-        saveButton.innerText = "Go To Payment"
+        saveButton.innerText = "Go To Payment";
+        saveButton.addEventListener('click',
+            function eventListener() {
+                saveButton.removeEventListener('click', eventListener)
+                dom.sleepModal();
+                dataHandler.goToPayment(
+                    dom.convertPage,
+                )
+            }
+        )
     },
 
     sleepModal: function () {
         let modal = document.querySelector("#modal");
+        if (modal == null) return
         let saveButton = modal.querySelector(".save-button");
         let spinner = modal.querySelector(".spinner-border");
         spinner.style.visibility = "visible";
@@ -188,21 +195,46 @@ export let dom = {
         let spinner = modal.querySelector(".spinner-border");
         spinner.style.visibility = "hidden";
         saveButton.disabled = false;
-    }
+    },
+
+    openPaymentPage: function(data) {
+        dom.activateModal();
+        let modal = document.querySelector("#modal");
+        modal.querySelector(".modal-body").innerHTML = data;
+        modal.querySelector(".modal-title").innerText = "Please give your payment details: ";
+        let saveButton = document.querySelector(".save-button");
+        saveButton.innerText = "Confirm & Pay";
+        saveButton.addEventListener('click',
+            function eventListener() {
+                saveButton.removeEventListener('click', eventListener)
+                dom.sleepModal();
+                let form = document.getElementById('form');
+                let formData = new FormData(form);
+                let object = {};
+                formData.forEach(function(value, key){
+                    object[key] = value;
+                });
+                dataHandler.pay(
+                    dom.convertPage,
+                    object
+                )
+            }
+        )
+    },
+
+    openResultPage: function(data) {
+        dom.activateModal();
+        let modal = document.querySelector("#modal");
+        modal.querySelector(".modal-body").innerHTML = data;
+        modal.querySelector(".modal-title").innerText = "Payment details";
+        let saveButton = document.querySelector(".save-button");
+        saveButton.innerText = "Ok";
+        saveButton.addEventListener('click',
+            function eventListener() {
+                saveButton.removeEventListener('click', eventListener)
+                dom.sleepModal();
+                $('#modal').modal("toggle");
+            }
+        )
+    },
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

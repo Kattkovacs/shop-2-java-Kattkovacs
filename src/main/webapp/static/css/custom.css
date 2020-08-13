@@ -75,7 +75,7 @@ h1 {
 }
 
 body {
-    background: -webkit-linear-gradient(top, #967259,#967259 30%, #ece0d1 30%, #ece0d1);
+    background: linear-gradient(to bottom, #967259 0%, #ece0d1 100%);
 }
 
 img {
