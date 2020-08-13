@@ -139,9 +139,13 @@ export let dom = {
         let saveButton = document.querySelector(".save-button");
         saveButton.addEventListener('click',
             () => {
+                if (!$('#form')[0].checkValidity()) {
+                    console.log("Not valid")
+                    return
+                }
                 let form = document.getElementById('form');
                 let formData = new FormData(form);
-                var object = {};
+                let object = {};
                 formData.forEach(function(value, key){
                     object[key] = value;
                 });
