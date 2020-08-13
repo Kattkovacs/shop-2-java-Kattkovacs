@@ -8,16 +8,20 @@ export let dom = {
         dom.isEmptyCart();
         dom.addActionToAddCheckoutButton();
         dom.sleepModal();
+        dom.addActionToCartLink();
     },
 
     addActionToAddCartButtons: function() {
         let buttons = document.querySelectorAll(".add-to-cart");
 
         for (let button of buttons){
-            button.addEventListener('click', dataHandler.addToCart.bind(
-                event,
-                dom.showResult,
-                button.getAttribute('product-id')));
+            button.addEventListener('click', () => {
+                dom.modifyCartSize(parseInt(document.querySelector(".cart-size").innerText) + 1)
+                document.querySelector(".cart-size")
+                dataHandler.addToCart(
+                    dom.showResult,
+                    button.getAttribute('product-id'))
+            });
         }
     },
 
@@ -74,9 +78,15 @@ export let dom = {
         }
     },
 
+    modifyCartSize: function(size){
+        let cartSize = document.querySelector(".cart-size")
+        cartSize.innerText = size
+    },
+
     modifyCart: function (response) {
         let productDiv = document.querySelector(`[product-id="${response['productId']}"]`);
         dom.modifyTotalPrice(response["totalOrderPrice"]);
+        dom.modifyCartSize(response["sizeOfCart"])
         if (response["quantity"] <= 0) {
             let cart = document.querySelector("#cart");
             cart.removeChild(productDiv);
@@ -238,4 +248,15 @@ export let dom = {
             }
         )
     },
+    addActionToCartLink: function() {
+        let link = document.querySelector(".cart-list");
+        let shape = document.querySelector(".shape")
+        link.addEventListener('mouseover', () => {
+            shape.classList.add("animate");
+        })
+        link.addEventListener('mouseleave', () => {
+            shape.classList.remove("animate");
+        })
+
+    }
 }

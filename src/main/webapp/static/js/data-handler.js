@@ -47,7 +47,7 @@ export let dataHandler = {
     init: function () {
     },
 
-    addToCart: function (callback, productId, event) {
+    addToCart: function (callback, productId) {
         let url = `/cart?add=${productId}`
         dataHandler._get(url, (response) => {
             dataHandler._data = response;

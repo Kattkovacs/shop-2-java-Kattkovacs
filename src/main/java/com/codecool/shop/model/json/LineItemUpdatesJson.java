@@ -15,7 +15,7 @@ public class LineItemUpdatesJson {
         setQuantity(lineItem.getQuantity());
         setTotalProductPrice(lineItem.getTotalProductPrice());
         setTotalOrderPrice(order.getTotalOrderPrice());
-        setSizeOfCart(order.getLineItemList().size());
+        setSizeOfCart(order.countLineItems());
     }
 
     public String getTotalOrderPrice() {
