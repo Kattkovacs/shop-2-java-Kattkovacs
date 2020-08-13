@@ -30,6 +30,10 @@ public class Order {
         return userDetails;
     }
 
+    public void setUserDetails(UserDetails userDetails) {
+        this.userDetails = userDetails;
+    }
+
     public LineItem getLineItem(Integer productId) { return lineItemMap.get(productId); }
 
     public float getTotalOrderPriceInFloat(){

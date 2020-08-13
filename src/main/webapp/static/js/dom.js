@@ -140,14 +140,15 @@ export let dom = {
         saveButton.addEventListener('click',
             () => {
                 let form = document.getElementById('form');
-                console.log(form)
                 let formData = new FormData(form);
-                console.log(formData);
-                // dataHandler.saveUserDetail(
-                //     event,
-                //     dom.openReviewPage,
-                //     formData
-                // )
+                var object = {};
+                formData.forEach(function(value, key){
+                    object[key] = value;
+                });
+                dataHandler.saveUserDetail(
+                    dom.openReviewPage,
+                    object
+                )
             }
 
 )

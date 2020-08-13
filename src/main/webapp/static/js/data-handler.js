@@ -21,6 +21,17 @@ export let dataHandler = {
             .then(response => callback(response));
     },
 
+    _post: function (url, data, callback) {
+        fetch(url, {
+            method: 'POST',
+            credentials: "include",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+
+        })
+            .then(response => callback(response))
+    },
+
     _api_post: function (url, data, callback) {
         fetch(url, {
             method: 'POST',
@@ -83,9 +94,9 @@ export let dataHandler = {
     },
 
 
-    saveUserDetail: function (callback, formData, event) {
+    saveUserDetail: function (callback, formData) {
         let url = `/userform`
-        dataHandler._api_post(url, formData, (response) => {
+        dataHandler._post(url, formData, (response) => {
             dataHandler._data = response;
             callback(response)
         });
