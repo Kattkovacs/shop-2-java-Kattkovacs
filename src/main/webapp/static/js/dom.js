@@ -234,6 +234,7 @@ export let dom = {
                 saveButton.removeEventListener('click', eventListener)
                 dom.sleepModal();
                 $('#modal').modal("toggle");
+                window.location.replace("/");
             }
         )
     },
