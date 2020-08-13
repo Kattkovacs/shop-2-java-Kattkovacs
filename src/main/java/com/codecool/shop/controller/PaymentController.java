@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/payment"})
 public class PaymentController extends HttpServlet {
@@ -31,6 +30,11 @@ public class PaymentController extends HttpServlet {
         context.setVariable("userDetails", userDetails);
         engine.process("success.html", context, resp.getWriter());
         orderDataStore.remove(req.getSession().getId());
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -41,6 +45,11 @@ public class PaymentController extends HttpServlet {
         Order order = orderDataStore.find(req.getSession().getId());
         context.setVariable("order", order);
         resp.setContentType("text/plain;charset=UTF-8");
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         engine.process("payment.html", context, resp.getWriter());
     }
 }

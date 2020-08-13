@@ -14,9 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/checkout"})
@@ -36,6 +34,11 @@ public class CheckoutController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("userDetails", userDetails);
         context.setVariable("order", order);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         engine.process("review.html", context, resp.getWriter());
     }
 
