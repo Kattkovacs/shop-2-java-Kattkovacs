@@ -136,8 +136,26 @@ export let dom = {
         let modal = document.querySelector("#modal");
         modal.querySelector(".modal-body").innerHTML = data;
         modal.querySelector(".modal-title").innerText = "Please provide your data.";
-    }
+        let saveButton = document.querySelector(".save-button");
+        saveButton.addEventListener('click',
+            () => {
+                let form = document.getElementById('form');
+                console.log(form)
+                let formData = new FormData(form);
+                console.log(formData);
+                // dataHandler.saveUserDetail(
+                //     event,
+                //     dom.openReviewPage,
+                //     formData
+                // )
+            }
 
+)
+    },
+
+    openReviewPage() {
+
+    }
 }
 
 
