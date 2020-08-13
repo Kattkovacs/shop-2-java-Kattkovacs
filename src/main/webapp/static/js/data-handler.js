@@ -98,7 +98,13 @@ export let dataHandler = {
         let url = `/userform`
         dataHandler._post(url, formData, (response) => {
             dataHandler._data = response;
-            callback(response)
+            callback(response).then(
+                function(data) {
+                    dom.openReviewPage(data)
+                }).catch(function(error){
+                    alert(error);
+                }
+            )
         });
     },
 }
