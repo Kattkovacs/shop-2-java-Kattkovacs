@@ -47,4 +47,12 @@ public class Order {
     public String getTotalOrderPrice() {
         return String.valueOf(getTotalOrderPriceInFloat()) + " USD";
     }
+
+    public int countLineItems() {
+        int size = 0;
+        for (LineItem lineItem: this.getLineItemList()) {
+            size += lineItem.getQuantity();
+        }
+        return size;
+    }
 }

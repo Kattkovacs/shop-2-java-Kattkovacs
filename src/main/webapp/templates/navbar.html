@@ -35,7 +35,23 @@
                 </li>
             </ul>
             <span class="cart-text">
-                <a class="cart-list" href="/cart"> <img class="navbar-icon mx-2" src="static/img/shopping-cart.png"> Cart</a>
+                <a class="cart-list" href="/cart">
+                    <div class="d-flex align-items-center">
+                        <div class="path justify-content-center">
+                            <img id="elem" class="shape trail navbar-icon" src="static/img/shopping-cart.png">
+                            <div class="cart-items">
+                                <div class="my-cart mx-1 d-flex align-items-center">
+                                    My Cart
+                                </div>
+                                <div class="cart-circle">
+                                    <p class="cart-size" th:text="${order.countLineItems()}">
+                                         0
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </span>
         </div>
     </nav>

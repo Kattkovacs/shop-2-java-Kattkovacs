@@ -1,8 +1,10 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.implementation.OrderDaoMem;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
@@ -23,6 +25,8 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/"})
 public class ProductController extends HttpServlet {
 
+    OrderDao orderDataStore = OrderDaoMem.getInstance();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -39,6 +43,7 @@ public class ProductController extends HttpServlet {
 
         context.setVariable("products", products);
         context.setVariable("filterBy", filterBy);
+        context.setVariable("order", orderDataStore.find(req.getSession().getId()));
 
         context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", supplierDataStore.getAll());
