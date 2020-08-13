@@ -35,7 +35,7 @@ public class UserFormController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("userDetails", userDetails);
-        engine.process("userDetails.html", context, resp.getWriter());
+        engine.process("review.html", context, resp.getWriter());
     }
 
     @Override
