@@ -6,7 +6,8 @@ export let dom = {
         dom.addActionToAddCartButtons();
         dom.addActionToQuantityButtons();
         dom.isEmptyCart();
-        dom.addActionToAddCheckoutButton()
+        dom.addActionToAddCheckoutButton();
+        dom.sleepModal();
     },
 
     addActionToAddCartButtons: function() {
@@ -132,17 +133,19 @@ export let dom = {
     },
 
     openUserDataForm: function (data) {
-        $('#modal').modal();
+        dom.activateModal();
         let modal = document.querySelector("#modal");
         modal.querySelector(".modal-body").innerHTML = data;
         modal.querySelector(".modal-title").innerText = "Please provide your data.";
         let saveButton = document.querySelector(".save-button");
+        $('#modal').modal();
         saveButton.addEventListener('click',
             () => {
                 if (!$('#form')[0].checkValidity()) {
                     console.log("Not valid")
                     return
                 }
+                dom.sleepModal();
                 let form = document.getElementById('form');
                 let formData = new FormData(form);
                 let object = {};
@@ -150,16 +153,41 @@ export let dom = {
                     object[key] = value;
                 });
                 dataHandler.saveUserDetail(
-                    dom.openReviewPage,
+                    dom.convertReviewPage,
                     object
                 )
             }
 
 )
     },
+    convertReviewPage: function(response) {
+        return response.text();
+    },
 
-    openReviewPage() {
 
+    openReviewPage: function(data) {
+        dom.activateModal();
+        let modal = document.querySelector("#modal");
+        modal.querySelector(".modal-body").innerHTML = data;
+        modal.querySelector(".modal-title").innerText = "Please review your order details";
+        let saveButton = document.querySelector(".save-button");
+        saveButton.innerText = "Go To Payment"
+    },
+
+    sleepModal: function () {
+        let modal = document.querySelector("#modal");
+        let saveButton = modal.querySelector(".save-button");
+        let spinner = modal.querySelector(".spinner-border");
+        spinner.style.visibility = "visible";
+        saveButton.disabled = true;
+    },
+
+    activateModal: function () {
+        let modal = document.querySelector("#modal");
+        let saveButton = modal.querySelector(".save-button");
+        let spinner = modal.querySelector(".spinner-border");
+        spinner.style.visibility = "hidden";
+        saveButton.disabled = false;
     }
 }
 
