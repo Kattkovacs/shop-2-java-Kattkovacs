@@ -30,6 +30,7 @@ public class PaymentController extends HttpServlet {
         UserDetails userDetails = order.getUserDetails();
         context.setVariable("userDetails", userDetails);
         engine.process("success.html", context, resp.getWriter());
+        orderDataStore.remove(req.getSession().getId());
     }
 
     @Override
