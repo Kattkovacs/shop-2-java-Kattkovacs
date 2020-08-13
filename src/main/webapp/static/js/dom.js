@@ -139,15 +139,20 @@ export let dom = {
         let saveButton = document.querySelector(".save-button");
         saveButton.addEventListener('click',
             () => {
+                if (!$('#form')[0].checkValidity()) {
+                    console.log("Not valid")
+                    return
+                }
                 let form = document.getElementById('form');
-                console.log(form)
                 let formData = new FormData(form);
-                console.log(formData);
-                // dataHandler.saveUserDetail(
-                //     event,
-                //     dom.openReviewPage,
-                //     formData
-                // )
+                let object = {};
+                formData.forEach(function(value, key){
+                    object[key] = value;
+                });
+                dataHandler.saveUserDetail(
+                    dom.openReviewPage,
+                    object
+                )
             }
 
 )
