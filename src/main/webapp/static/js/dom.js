@@ -136,8 +136,31 @@ export let dom = {
         let modal = document.querySelector("#modal");
         modal.querySelector(".modal-body").innerHTML = data;
         modal.querySelector(".modal-title").innerText = "Please provide your data.";
-    }
+        let saveButton = document.querySelector(".save-button");
+        saveButton.addEventListener('click',
+            () => {
+                if (!$('#form')[0].checkValidity()) {
+                    console.log("Not valid")
+                    return
+                }
+                let form = document.getElementById('form');
+                let formData = new FormData(form);
+                let object = {};
+                formData.forEach(function(value, key){
+                    object[key] = value;
+                });
+                dataHandler.saveUserDetail(
+                    dom.openReviewPage,
+                    object
+                )
+            }
 
+)
+    },
+
+    openReviewPage() {
+
+    }
 }
 
 
