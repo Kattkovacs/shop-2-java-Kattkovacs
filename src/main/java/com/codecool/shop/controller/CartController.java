@@ -26,12 +26,14 @@ import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = {"/cart"})
 public class CartController extends HttpServlet {
+    OrderDao orderDataStore = OrderDaoMem.getInstance();
+    ProductDao productDataStore = ProductDaoMem.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
-        ProductDao productDataStore = ProductDaoMem.getInstance();
+
         Order order = orderDataStore.find(req.getSession().getId());
+
         if (req.getParameter("add") != null) {
             order.addToCart(new LineItem(
                     productDataStore.find(Integer.parseInt(req.getParameter("add"))),
@@ -42,24 +44,14 @@ public class CartController extends HttpServlet {
         if (req.getParameter("increment") != null) {
             LineItem lineItem = order.getLineItem(Integer.parseInt(req.getParameter("increment")));
             lineItem.incrementQuantity();
-            String responseString = new Gson().toJson(new LineItemUpdatesJson(lineItem, order));
-            PrintWriter out = resp.getWriter();
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("UTF-8");
-            out.print(responseString);
-            out.flush();
+            this.sendOrderUpdates(resp, order, lineItem);
             return;
         }
 
         if (req.getParameter("decrement") != null) {
             LineItem lineItem = order.getLineItem(Integer.parseInt(req.getParameter("decrement")));
             lineItem.decrementQuantity();
-            String responseString = new Gson().toJson(new LineItemUpdatesJson(lineItem, order));
-            PrintWriter out = resp.getWriter();
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("UTF-8");
-            out.print(responseString);
-            out.flush();
+            this.sendOrderUpdates(resp, order, lineItem);
             return;
         }
 
@@ -67,12 +59,7 @@ public class CartController extends HttpServlet {
             LineItem lineItem = order.getLineItem(Integer.parseInt(req.getParameter("remove")));
             lineItem.setQuantity(0);
             order.removeFromCart(Integer.parseInt(req.getParameter("remove")));
-            String responseString = new Gson().toJson(new LineItemUpdatesJson(lineItem, order));
-            PrintWriter out = resp.getWriter();
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("UTF-8");
-            out.print(responseString);
-            out.flush();
+            this.sendOrderUpdates(resp, order, lineItem);
             return;
         }
 
@@ -86,5 +73,14 @@ public class CartController extends HttpServlet {
         context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", supplierDataStore.getAll());
         engine.process("product/index.html", context, resp.getWriter());
+    }
+
+    private void sendOrderUpdates(HttpServletResponse resp, Order order, LineItem lineItem) throws IOException {
+        String responseString = new Gson().toJson(new LineItemUpdatesJson(lineItem, order));
+        PrintWriter out = resp.getWriter();
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        out.print(responseString);
+        out.flush();
     }
 }

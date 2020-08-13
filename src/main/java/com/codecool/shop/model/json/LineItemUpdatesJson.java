@@ -8,12 +8,14 @@ public class LineItemUpdatesJson {
     int quantity;
     String totalProductPrice;
     String totalOrderPrice;
+    int sizeOfCart;
 
     public LineItemUpdatesJson(LineItem lineItem, Order order) {
         setProductId(lineItem.getProduct().getId());
         setQuantity(lineItem.getQuantity());
         setTotalProductPrice(lineItem.getTotalProductPrice());
         setTotalOrderPrice(order.getTotalOrderPrice());
+        setSizeOfCart(order.getLineItemList().size());
     }
 
     public String getTotalOrderPrice() {
@@ -46,5 +48,13 @@ public class LineItemUpdatesJson {
 
     public void setTotalProductPrice(String totalProductPrice) {
         this.totalProductPrice = totalProductPrice;
+    }
+
+    public int getSizeOfCart() {
+        return sizeOfCart;
+    }
+
+    public void setSizeOfCart(int sizeOfCart) {
+        this.sizeOfCart = sizeOfCart;
     }
 }
