@@ -80,5 +80,14 @@ export let dataHandler = {
                 }
             )
         });
-    }
+    },
+
+
+    saveUserDetail: function (callback, formData, event) {
+        let url = `/userform`
+        dataHandler._api_post(url, formData, (response) => {
+            dataHandler._data = response;
+            callback(response)
+        });
+    },
 }
