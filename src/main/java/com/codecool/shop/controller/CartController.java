@@ -5,10 +5,6 @@ import com.codecool.shop.dao.interfaces.OrderDao;
 import com.codecool.shop.dao.interfaces.ProductCategoryDao;
 import com.codecool.shop.dao.interfaces.ProductDao;
 import com.codecool.shop.dao.interfaces.SupplierDao;
-import com.codecool.shop.dao.implementation_memory.OrderDaoMem;
-import com.codecool.shop.dao.implementation_memory.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation_memory.ProductDaoMem;
-import com.codecool.shop.dao.implementation_memory.SupplierDaoMem;
 import com.codecool.shop.model.LineItem;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.json.LineItemUpdatesJson;
@@ -26,8 +22,11 @@ import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = {"/cart"})
 public class CartController extends HttpServlet {
-    OrderDao orderDataStore = OrderDaoMem.getInstance();
-    ProductDao productDataStore = ProductDaoMem.getInstance();
+
+    SupplierDao supplierDataStore = DaoSelector.getSupplierDataStore();
+    ProductCategoryDao productCategoryDataStore = DaoSelector.getProductCategoryDataStore();
+    ProductDao productDataStore = DaoSelector.getProductDataStore();
+    OrderDao orderDataStore = DaoSelector.getOrderDataStore();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -65,8 +64,6 @@ public class CartController extends HttpServlet {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
         context.setVariable("order", orderDataStore.find(req.getSession().getId()));
         context.setVariable("page", "cart");

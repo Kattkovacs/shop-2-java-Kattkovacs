@@ -4,13 +4,11 @@ import com.codecool.shop.dao.interfaces.OrderDao;
 import com.codecool.shop.dao.interfaces.ProductCategoryDao;
 import com.codecool.shop.dao.interfaces.ProductDao;
 import com.codecool.shop.dao.interfaces.SupplierDao;
-import com.codecool.shop.dao.implementation_memory.OrderDaoMem;
-import com.codecool.shop.dao.implementation_memory.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation_memory.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.implementation_memory.SupplierDaoMem;
 import com.codecool.shop.model.Filterable;
 import com.codecool.shop.model.Product;
+import com.codecool.shop.model.ProductCategory;
+import com.codecool.shop.model.Supplier;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -25,54 +23,67 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/"})
 public class ProductController extends HttpServlet {
 
-    OrderDao orderDataStore = OrderDaoMem.getInstance();
+    SupplierDao supplierDataStore = DaoSelector.getSupplierDataStore();
+    ProductCategoryDao productCategoryDataStore = DaoSelector.getProductCategoryDataStore();
+    ProductDao productDataStore = DaoSelector.getProductDataStore();
+    OrderDao orderDataStore = DaoSelector.getOrderDataStore();
+
+    List<Product> products;
+    String filterName;
+    String filterDescription;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
-        Filterable filterBy = getFilterBy(
-                req.getParameter("categoryId"),
-                req.getParameter("supplierId")
-        );
-        List<Product> products = getProductList(filterBy);
+        String categoryId = req.getParameter("categoryId");
+        String supplierId = req.getParameter("supplierId");
 
-        context.setVariable("products", products);
-        context.setVariable("filterBy", filterBy);
-        context.setVariable("order", orderDataStore.find(req.getSession().getId()));
+        if (supplierId != null) {
+            setReturningDataFilteredBySupplier(supplierId);
+        } else if (categoryId != null) {
+            setReturningDataFilteredByCategory(categoryId);
+        } else {
+            setReturningDataFilteredByCategory("1");
+        }
 
-        context.setVariable("categories", productCategoryDataStore.getAll());
-        context.setVariable("suppliers", supplierDataStore.getAll());
-        context.setVariable("page", "products");
+        setContextVariables(req, context);
 
         engine.process("product/index.html", context, resp.getWriter());
     }
 
-    private Filterable getFilterBy(String categoryId, String supplierId) {
-
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-
-        int categoryIdNum = castStringToInt(categoryId);
-        int supplierIdNum = castStringToInt(supplierId);
-        if (categoryIdNum != 0) return productCategoryDataStore.find(categoryIdNum);
-        if (supplierIdNum != 0) return supplierDataStore.find(supplierIdNum);
-        return productCategoryDataStore.find(1);
+    private void setContextVariables(HttpServletRequest req, WebContext context) {
+        context.setVariable("products", products);
+        context.setVariable("filterName", filterName);
+        context.setVariable("filterDescription", filterDescription);
+        context.setVariable("order", orderDataStore.find(req.getSession().getId()));
+        context.setVariable("categories", productCategoryDataStore.getAll());
+        context.setVariable("suppliers", supplierDataStore.getAll());
+        context.setVariable("page", "products");
     }
 
+    private void setReturningDataFilteredByCategory(String categoryId) {
+        ProductCategory productCategory = productCategoryDataStore.find(castStringToInt(categoryId));
+        products = productDataStore.getBy(productCategory);
+        setFilterInfo(productCategory.getName(), productCategory.getDescription());
+    }
 
-    private List<Product> getProductList(Filterable filterBy) {
-        ProductDao productDataStore = ProductDaoMem.getInstance();
-        return productDataStore.getBy(filterBy);
+    private void setReturningDataFilteredBySupplier(String supplierId) {
+        Supplier supplier = supplierDataStore.find(castStringToInt(supplierId));
+        products = productDataStore.getBy(supplier);
+        setFilterInfo(supplier.getName(), supplier.getDescription());
+    }
+
+    private void setFilterInfo(String filterName, String filterDescription) {
+        this.filterName = filterName;
+        this.filterDescription = filterDescription;
     }
 
     private int castStringToInt(String text) {
-        if (text == null) return 0;
-        int number = 0;
+        if (text == null) return 1;
+        int number = 1;
         try {
             number = Integer.parseInt(text);
         } catch (NumberFormatException e) {

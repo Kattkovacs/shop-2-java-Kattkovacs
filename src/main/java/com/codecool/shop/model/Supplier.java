@@ -33,4 +33,11 @@ public class Supplier extends BaseModel implements Filterable{
                 this.description
         );
     }
+
+    @Override
+    public boolean matchFilter(Filterable filterable) {
+        if (filterable == null) return false;
+        if (filterable.getClass() != Supplier.class) return false;
+        return ((Supplier) filterable).getId() == this.id;
+    }
 }

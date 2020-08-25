@@ -3,8 +3,8 @@
 <body>
 <div th:fragment="copy">
     <div class="card text-center p-1">
-        <strong th:text="${filterBy.getName()}">Category Title</strong>
-        <p class="card-text" th:text="${filterBy.description}">Filter description... </p>
+        <strong th:text="${filterName}">Category Title</strong>
+        <p class="card-text" th:text="${filterDescription}">Filter description... </p>
     </div>
     <div id="products" class="row">
         <div class="col col-sm-12 col-md-6 col-lg-4" th:each="prod,iterStat : ${products}">
