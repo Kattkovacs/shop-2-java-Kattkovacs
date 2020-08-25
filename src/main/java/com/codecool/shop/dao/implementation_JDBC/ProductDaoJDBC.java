@@ -17,14 +17,14 @@ import java.util.List;
 
 public class ProductDaoJDBC implements ProductDao {
 
-    private static com.codecool.shop.dao.implementation_JDBC.ProductDaoJDBC instance = null;
+    private static ProductDaoJDBC instance = null;
     private final DataSource dataSource = ShopDatabaseManager.getInstance().getDataSource();
     private final ProductCategoryDao productCategoryDao = new ProductCategoryDaoJDBC();
     private final SupplierDao supplierDao = new SupplierDaoJDBC();
 
-    public static com.codecool.shop.dao.implementation_JDBC.ProductDaoJDBC getInstance() {
+    public static ProductDaoJDBC getInstance() {
         if (instance == null) {
-            instance = new com.codecool.shop.dao.implementation_JDBC.ProductDaoJDBC();
+            instance = new ProductDaoJDBC();
         }
         return instance;
     }
@@ -130,7 +130,7 @@ public class ProductDaoJDBC implements ProductDao {
         try (Connection conn = dataSource.getConnection()) {
             ProductCategoryDao productCategoryDao = new ProductCategoryDaoJDBC();
             SupplierDao supplierDao = new SupplierDaoJDBC();
-            String sql = "SELECT * FROM product WHERE supplier_id = ?;";
+            String sql = "SELECT * FROM product WHERE product_category_id = ?;";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, productCategory.getId());
             ResultSet resultSet = statement.executeQuery();
@@ -147,10 +147,6 @@ public class ProductDaoJDBC implements ProductDao {
         }
     }
 
-    @Override
-    public List<Product> getBy(Filterable filterBy) {
-        return null;
-    }
 }
 
 

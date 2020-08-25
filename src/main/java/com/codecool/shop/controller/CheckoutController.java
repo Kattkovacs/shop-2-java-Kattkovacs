@@ -2,7 +2,6 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.interfaces.OrderDao;
-import com.codecool.shop.dao.implementation_memory.OrderDaoMem;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.UserDetails;
 import com.google.gson.Gson;
@@ -20,13 +19,13 @@ import java.util.stream.Collectors;
 @WebServlet(urlPatterns = {"/checkout"})
 public class CheckoutController extends HttpServlet {
 
+    OrderDao orderDataStore = DaoSelector.getOrderDataStore();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Gson gson = new Gson();
         String jsonString = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         UserDetails userDetails = gson.fromJson(jsonString, UserDetails.class);
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
         Order order = orderDataStore.find(req.getSession().getId());
         order.setUserDetails(userDetails);
 
