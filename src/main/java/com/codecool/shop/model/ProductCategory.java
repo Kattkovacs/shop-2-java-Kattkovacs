@@ -45,4 +45,11 @@ public class ProductCategory extends BaseModel implements Filterable {
                 this.department,
                 this.description);
     }
+
+    @Override
+    public boolean matchFilter(Filterable filterable) {
+        if (filterable == null) return false;
+        if (filterable.getClass() != ProductCategory.class) return false;
+        return ((ProductCategory) filterable).getId() == this.id;
+    }
 }
