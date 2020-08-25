@@ -1,8 +1,8 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.implementation.OrderDaoMem;
+import com.codecool.shop.dao.interfaces.OrderDao;
+import com.codecool.shop.dao.implementation_memory.OrderDaoMem;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.UserDetails;
 import com.google.gson.Gson;
