@@ -30,7 +30,6 @@ public class SupplierDaoJDBC implements SupplierDao {
             statement.setString(1, supplier.getName());
             statement.setString(2, supplier.getDescription());
             statement.executeUpdate();
-            //Read answer from DataBase
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
             supplier.setId(resultSet.getInt(1));
