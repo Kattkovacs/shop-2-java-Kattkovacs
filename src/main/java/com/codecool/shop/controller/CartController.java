@@ -1,6 +1,7 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.dao.implementation_JDBC.SupplierDaoJDBC;
 import com.codecool.shop.dao.interfaces.OrderDao;
 import com.codecool.shop.dao.interfaces.ProductCategoryDao;
 import com.codecool.shop.dao.interfaces.ProductDao;
@@ -66,7 +67,7 @@ public class CartController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+        SupplierDao supplierDataStore = SupplierDaoJDBC.getInstance();
 
         context.setVariable("order", orderDataStore.find(req.getSession().getId()));
         context.setVariable("page", "cart");

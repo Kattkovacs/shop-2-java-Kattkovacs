@@ -1,5 +1,6 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.implementation_JDBC.SupplierDaoJDBC;
 import com.codecool.shop.dao.interfaces.OrderDao;
 import com.codecool.shop.dao.interfaces.ProductCategoryDao;
 import com.codecool.shop.dao.interfaces.ProductDao;
@@ -33,7 +34,7 @@ public class ProductController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+        SupplierDao supplierDataStore = SupplierDaoJDBC.getInstance();
 
         Filterable filterBy = getFilterBy(
                 req.getParameter("categoryId"),
@@ -55,7 +56,7 @@ public class ProductController extends HttpServlet {
     private Filterable getFilterBy(String categoryId, String supplierId) {
 
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+        SupplierDao supplierDataStore = SupplierDaoJDBC.getInstance();
 
         int categoryIdNum = castStringToInt(categoryId);
         int supplierIdNum = castStringToInt(supplierId);
