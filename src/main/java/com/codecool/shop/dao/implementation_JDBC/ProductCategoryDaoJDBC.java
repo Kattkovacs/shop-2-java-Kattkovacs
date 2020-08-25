@@ -28,6 +28,7 @@ public class ProductCategoryDaoJDBC implements ProductCategoryDao {
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, productCategory.getName());
             statement.setString(2, productCategory.getDescription());
+            statement.setString(3, productCategory.getDepartment());
             statement.executeUpdate();
             //Read answer from DataBase
             ResultSet resultSet = statement.getGeneratedKeys();
