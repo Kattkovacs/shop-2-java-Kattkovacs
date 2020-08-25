@@ -21,6 +21,9 @@ public class ProductCategoryDaoJDBC implements ProductCategoryDao {
         return instance;
     }
 
+    private ProductCategoryDaoJDBC() {
+    }
+
     @Override
     public void add(ProductCategory productCategory) {
         try (Connection conn = dataSource.getConnection()) {
@@ -30,7 +33,6 @@ public class ProductCategoryDaoJDBC implements ProductCategoryDao {
             statement.setString(2, productCategory.getDescription());
             statement.setString(3, productCategory.getDepartment());
             statement.executeUpdate();
-            //Read answer from DataBase
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
             productCategory.setId(resultSet.getInt(1));

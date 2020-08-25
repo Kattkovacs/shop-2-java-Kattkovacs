@@ -1,5 +1,6 @@
 package com.codecool.shop.dao.implementation_JDBC;
 
+import com.codecool.shop.controller.DaoSelector;
 import com.codecool.shop.dao.ShopDatabaseManager;
 import com.codecool.shop.dao.interfaces.ProductCategoryDao;
 import com.codecool.shop.dao.interfaces.ProductDao;
@@ -19,14 +20,17 @@ public class ProductDaoJDBC implements ProductDao {
 
     private static ProductDaoJDBC instance = null;
     private final DataSource dataSource = ShopDatabaseManager.getInstance().getDataSource();
-    private final ProductCategoryDao productCategoryDao = new ProductCategoryDaoJDBC();
-    private final SupplierDao supplierDao = new SupplierDaoJDBC();
+    private final ProductCategoryDao productCategoryDao = ProductCategoryDaoJDBC.getInstance();
+    private final SupplierDao supplierDao = SupplierDaoJDBC.getInstance();
 
     public static ProductDaoJDBC getInstance() {
         if (instance == null) {
             instance = new ProductDaoJDBC();
         }
         return instance;
+    }
+
+    private ProductDaoJDBC() {
     }
 
     @Override
@@ -39,7 +43,6 @@ public class ProductDaoJDBC implements ProductDao {
             statement.setFloat(3, product.getDefaultPrice());
             statement.setString(4, String.valueOf(product.getDefaultCurrency()));
             statement.executeUpdate();
-            //Read answer from DataBase
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
             product.setId(resultSet.getInt(1));
@@ -66,38 +69,16 @@ public class ProductDaoJDBC implements ProductDao {
         }
     }
 
-    private Product getProduct(ResultSet resultSet) throws SQLException {
-        return new Product(
-                        resultSet.getString("name"),
-                        resultSet.getFloat("default_price"),
-                        resultSet.getString("default_currency"),
-                        resultSet.getString("description"),
-                        productCategoryDao.find(resultSet.getInt("product_category_id")),
-                        supplierDao.find(resultSet.getInt("supplier_id"))
-                );
-    }
-
     @Override
     public void remove(int id) {
-
     }
 
     @Override
     public List<Product> getAll() {
         try (Connection conn = dataSource.getConnection()) {
-            ProductCategoryDao productCategoryDao = new ProductCategoryDaoJDBC();
-            SupplierDao supplierDao = new SupplierDaoJDBC();
             String sql = "SELECT * FROM product;";
             PreparedStatement statement = conn.prepareStatement(sql);
-            ResultSet resultSet = statement.executeQuery();
-            List<Product> products = new ArrayList<>();
-
-            while (resultSet.next()) {
-                Product product = getProduct(resultSet);
-                product.setId(resultSet.getInt("id"));
-                products.add(product);
-            }
-            return products;
+            return getProducts(statement.executeQuery());
         } catch (SQLException e) {
             throw new RuntimeException("Error while reading db: " + e);
         }
@@ -106,20 +87,10 @@ public class ProductDaoJDBC implements ProductDao {
     @Override
     public List<Product> getBy(Supplier supplier) {
         try (Connection conn = dataSource.getConnection()) {
-            ProductCategoryDao productCategoryDao = new ProductCategoryDaoJDBC();
-            SupplierDao supplierDao = new SupplierDaoJDBC();
             String sql = "SELECT * FROM product WHERE supplier_id = ?;";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, supplier.getId());
-            ResultSet resultSet = statement.executeQuery();
-            List<Product> products = new ArrayList<>();
-
-            while (resultSet.next()) {
-                Product product = getProduct(resultSet);
-                product.setId(resultSet.getInt("id"));
-                products.add(product);
-            }
-            return products;
+            return getProducts(statement.executeQuery());
         } catch (SQLException e) {
             throw new RuntimeException("Error while reading db: " + e);
         }
@@ -128,23 +99,35 @@ public class ProductDaoJDBC implements ProductDao {
     @Override
     public List<Product> getBy(ProductCategory productCategory) {
         try (Connection conn = dataSource.getConnection()) {
-            ProductCategoryDao productCategoryDao = new ProductCategoryDaoJDBC();
-            SupplierDao supplierDao = new SupplierDaoJDBC();
             String sql = "SELECT * FROM product WHERE product_category_id = ?;";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, productCategory.getId());
-            ResultSet resultSet = statement.executeQuery();
-            List<Product> products = new ArrayList<>();
-
-            while (resultSet.next()) {
-                Product product = getProduct(resultSet);
-                product.setId(resultSet.getInt("id"));
-                products.add(product);
-            }
-            return products;
+            return getProducts(statement.executeQuery());
         } catch (SQLException e) {
             throw new RuntimeException("Error while reading db: " + e);
         }
+    }
+
+    private Product getProduct(ResultSet resultSet) throws SQLException {
+        return new Product(
+                resultSet.getString("name"),
+                resultSet.getFloat("default_price"),
+                resultSet.getString("default_currency"),
+                resultSet.getString("description"),
+                productCategoryDao.find(resultSet.getInt("product_category_id")),
+                supplierDao.find(resultSet.getInt("supplier_id"))
+        );
+    }
+
+    private List<Product> getProducts(ResultSet resultSet) throws SQLException {
+        List<Product> products = new ArrayList<>();
+
+        while (resultSet.next()) {
+            Product product = getProduct(resultSet);
+            product.setId(resultSet.getInt("id"));
+            products.add(product);
+        }
+        return products;
     }
 
 }
