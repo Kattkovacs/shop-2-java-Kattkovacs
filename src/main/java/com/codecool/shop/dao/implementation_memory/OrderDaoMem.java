@@ -1,6 +1,6 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.implementation_memory;
 
-import com.codecool.shop.dao.OrderDao;
+import com.codecool.shop.dao.interfaces.OrderDao;
 import com.codecool.shop.model.Order;
 
 import java.util.HashMap;

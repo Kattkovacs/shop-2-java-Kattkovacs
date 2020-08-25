@@ -1,6 +1,6 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.implementation_memory;
 
-import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.interfaces.SupplierDao;
 import com.codecool.shop.model.Supplier;
 
 import java.util.ArrayList;
