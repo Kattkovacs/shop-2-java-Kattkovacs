@@ -64,10 +64,6 @@ public class Product extends BaseModel {
         this.supplier.addProduct(this);
     }
 
-    public boolean isFilterable (Filterable filterBy) {
-        return this.supplier.matchFilter(filterBy) ||
-                this.productCategory.matchFilter(filterBy);
-    }
 
     @Override
     public String toString() {

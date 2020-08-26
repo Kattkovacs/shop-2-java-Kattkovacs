@@ -27,7 +27,7 @@ public class UserDaoJDBC implements UserDao {
     @Override
     public void add(User user, String password) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "INSERT INTO "user" (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO \"user\" (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
