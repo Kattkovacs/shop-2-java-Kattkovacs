@@ -64,7 +64,24 @@ CREATE TABLE public.order (
                               id serial NOT NULL
                                   constraint order_pk
                                       primary key,
-                              total_order_price float8 NOT NULL
+                              user_id integer NOT NULL
+                                  constraint user_id_fk
+                                      references "user"
+                                      on delete cascade,
+                              total_order_price float8 NOT NULL,
+                              first_name text NOT NULL,
+                              last_name text NOT NULL,
+                              email text NOT NULL,
+                              phone text NOT NULL,
+                              address text NOT NULL,
+                              city text NOT NULL,
+                              state text NOT NULL,
+                              zip int NOT NULL,
+                              address2 text NOT NULL,
+                              city2 text NOT NULL,
+                              state2 text NOT NULL,
+                              zip2 int NOT NULL
+
 );
 
 DROP TABLE IF EXISTS public.order_details;
@@ -74,7 +91,7 @@ CREATE TABLE public.order_details (
                                        primary key,
                                 order_id integer NOT NULL
                                     constraint order_id_fk
-                                        references order
+                                        references "order"
                                             on delete cascade,
                                 product_id integer NOT NULL
                                     constraint product_id_fk
