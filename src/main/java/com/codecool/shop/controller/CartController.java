@@ -26,12 +26,12 @@ public class CartController extends HttpServlet {
     SupplierDao supplierDataStore = DaoSelector.getSupplierDataStore();
     ProductCategoryDao productCategoryDataStore = DaoSelector.getProductCategoryDataStore();
     ProductDao productDataStore = DaoSelector.getProductDataStore();
-    OrderDao orderDataStore = DaoSelector.getOrderDataStore();
+    OrderDao orderCacheStore = DaoSelector.getOrderCacheStore();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Order order = orderDataStore.find(req.getSession().getId());
+        Order order = orderCacheStore.find(req.getSession().getId());
 
         if (req.getParameter("add") != null) {
             order.addToCart(new LineItem(
@@ -65,7 +65,7 @@ public class CartController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
-        context.setVariable("order", orderDataStore.find(req.getSession().getId()));
+        context.setVariable("order", orderCacheStore.find(req.getSession().getId()));
         context.setVariable("page", "cart");
         context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", supplierDataStore.getAll());

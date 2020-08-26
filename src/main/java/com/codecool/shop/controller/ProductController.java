@@ -25,7 +25,7 @@ public class ProductController extends HttpServlet {
     SupplierDao supplierDataStore = DaoSelector.getSupplierDataStore();
     ProductCategoryDao productCategoryDataStore = DaoSelector.getProductCategoryDataStore();
     ProductDao productDataStore = DaoSelector.getProductDataStore();
-    OrderDao orderDataStore = DaoSelector.getOrderDataStore();
+    OrderDao orderCacheStore = DaoSelector.getOrderCacheStore();
 
     List<Product> products;
     String filterName;
@@ -57,7 +57,7 @@ public class ProductController extends HttpServlet {
         context.setVariable("products", products);
         context.setVariable("filterName", filterName);
         context.setVariable("filterDescription", filterDescription);
-        context.setVariable("order", orderDataStore.find(req.getSession().getId()));
+        context.setVariable("order", orderCacheStore.find(req.getSession().getId()));
         context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", supplierDataStore.getAll());
         context.setVariable("page", "products");

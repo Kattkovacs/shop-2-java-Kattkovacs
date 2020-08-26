@@ -1,10 +1,7 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.dao.implementation_JDBC.ProductCategoryDaoJDBC;
-import com.codecool.shop.dao.implementation_JDBC.ProductDaoJDBC;
-import com.codecool.shop.dao.implementation_JDBC.SupplierDaoJDBC;
-import com.codecool.shop.dao.implementation_JDBC.UserDaoJDBC;
-import com.codecool.shop.dao.implementation_memory.OrderDaoMem;
+import com.codecool.shop.dao.implementation_JDBC.*;
+import com.codecool.shop.dao.OrderDaoCache;
 import com.codecool.shop.dao.interfaces.*;
 
 public class DaoSelector {
@@ -14,8 +11,10 @@ public class DaoSelector {
     static SupplierDao supplierDataStore = SupplierDaoJDBC.getInstance(CONNECTION_PROPERTIES);
     static ProductCategoryDao productCategoryDataStore = ProductCategoryDaoJDBC.getInstance(CONNECTION_PROPERTIES);
     static ProductDao productDataStore = ProductDaoJDBC.getInstance(CONNECTION_PROPERTIES);
-    static OrderDao orderDataStore = OrderDaoMem.getInstance();
+    static OrderDao orderDataStore = OrderDaoJDBC.getInstance(CONNECTION_PROPERTIES);
     static UserDao userDataStore = UserDaoJDBC.getInstance(CONNECTION_PROPERTIES);
+
+    static OrderDao orderCacheStore = OrderDaoCache.getInstance();
 
     public static SupplierDao getSupplierDataStore() {
         return supplierDataStore;
@@ -29,8 +28,8 @@ public class DaoSelector {
         return productDataStore;
     }
 
-    public static OrderDao getOrderDataStore() {
-        return orderDataStore;
+    public static OrderDao getOrderCacheStore() {
+        return orderCacheStore;
     }
 
     public static UserDao getUserDataStore() { return userDataStore; }
