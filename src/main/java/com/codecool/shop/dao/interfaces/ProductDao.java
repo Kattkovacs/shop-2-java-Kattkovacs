@@ -1,6 +1,5 @@
 package com.codecool.shop.dao.interfaces;
 
-import com.codecool.shop.model.Filterable;
 import com.codecool.shop.model.Supplier;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;

@@ -5,7 +5,6 @@ import com.codecool.shop.dao.interfaces.ProductCategoryDao;
 import com.codecool.shop.dao.interfaces.ProductDao;
 import com.codecool.shop.dao.interfaces.SupplierDao;
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.model.Filterable;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;

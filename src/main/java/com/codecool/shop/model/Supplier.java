@@ -3,7 +3,7 @@ package com.codecool.shop.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Supplier extends BaseModel implements Filterable{
+public class Supplier extends BaseModel{
     private List<Product> products;
 
     public Supplier(String name, String description) {
@@ -32,12 +32,5 @@ public class Supplier extends BaseModel implements Filterable{
                 this.name,
                 this.description
         );
-    }
-
-    @Override
-    public boolean matchFilter(Filterable filterable) {
-        if (filterable == null) return false;
-        if (filterable.getClass() != Supplier.class) return false;
-        return ((Supplier) filterable).getId() == this.id;
     }
 }
