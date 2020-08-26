@@ -2,7 +2,6 @@ package com.codecool.shop.dao.implementation_memory;
 
 
 import com.codecool.shop.dao.interfaces.ProductDao;
-import com.codecool.shop.model.Filterable;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
@@ -55,10 +54,5 @@ public class ProductDaoMem implements ProductDao {
     @Override
     public List<Product> getBy(ProductCategory productCategory) {
         return data.stream().filter(t -> t.getProductCategory().equals(productCategory)).collect(Collectors.toList());
-    }
-
-
-    public List<Product> getBy(Filterable filterBy) {
-        return data.stream().filter(t -> t.isFilterable(filterBy)).collect(Collectors.toList());
     }
 }

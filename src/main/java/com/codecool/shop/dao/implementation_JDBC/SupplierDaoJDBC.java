@@ -23,7 +23,7 @@ public class SupplierDaoJDBC implements SupplierDao {
     }
 
     public SupplierDaoJDBC(String connectionProperties) {
-        this.dataSource = ShopDatabaseManager.getInstance(connectionProperties).getDataSource();;
+        this.dataSource = ShopDatabaseManager.getInstance(connectionProperties).getDataSource();
     }
 
     @Override
