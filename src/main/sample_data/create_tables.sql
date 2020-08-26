@@ -64,7 +64,7 @@ CREATE TABLE public.order (
                               id serial NOT NULL
                                   constraint order_pk
                                       primary key,
-                              user_id integer NOT NULL
+                              user_id integer
                                   constraint user_id_fk
                                       references "user"
                                       on delete cascade,
