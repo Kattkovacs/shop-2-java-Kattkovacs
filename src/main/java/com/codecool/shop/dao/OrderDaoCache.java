@@ -1,11 +1,12 @@
 package com.codecool.shop.dao;
 
+import com.codecool.shop.dao.interfaces.OrderCacheDao;
 import com.codecool.shop.model.Order;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class OrderDaoCache {
+public class OrderDaoCache implements OrderCacheDao {
 
     private Map<String, Order> orders = new HashMap<>();
     private static OrderDaoCache instance = null;

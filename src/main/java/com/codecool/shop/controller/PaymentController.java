@@ -1,6 +1,8 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.dao.implementation_JDBC.OrderDaoJDBC;
+import com.codecool.shop.dao.interfaces.OrderCacheDao;
 import com.codecool.shop.dao.interfaces.OrderDao;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.UserDetails;
@@ -18,7 +20,8 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/payment"})
 public class PaymentController extends HttpServlet {
 
-    OrderDao orderCacheStore = DaoSelector.getOrderCacheStore();
+    OrderCacheDao orderCacheStore = DaoSelector.getOrderCacheStore();
+    OrderDao orderDataStore = DaoSelector.getOrderDataStore();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,6 +32,7 @@ public class PaymentController extends HttpServlet {
         UserDetails userDetails = order.getUserDetails();
         context.setVariable("userDetails", userDetails);
         engine.process("success.html", context, resp.getWriter());
+        orderDataStore.addOrder(order);
         orderCacheStore.remove(req.getSession().getId());
         try {
             Thread.sleep(5000);
