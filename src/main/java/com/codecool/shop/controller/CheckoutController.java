@@ -19,14 +19,14 @@ import java.util.stream.Collectors;
 @WebServlet(urlPatterns = {"/checkout"})
 public class CheckoutController extends HttpServlet {
 
-    OrderDao orderDataStore = DaoSelector.getOrderDataStore();
+    OrderDao orderCacheStore = DaoSelector.getOrderCacheStore();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Gson gson = new Gson();
         String jsonString = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         UserDetails userDetails = gson.fromJson(jsonString, UserDetails.class);
-        Order order = orderDataStore.find(req.getSession().getId());
+        Order order = orderCacheStore.find(req.getSession().getId());
         order.setUserDetails(userDetails);
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
