@@ -6,7 +6,6 @@ import com.codecool.shop.dao.interfaces.ProductCategoryDao;
 import com.codecool.shop.dao.interfaces.ProductDao;
 
 import com.codecool.shop.dao.interfaces.SupplierDao;
-import com.codecool.shop.model.Filterable;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
@@ -19,18 +18,19 @@ import java.util.List;
 public class ProductDaoJDBC implements ProductDao {
 
     private static ProductDaoJDBC instance = null;
-    private final DataSource dataSource = ShopDatabaseManager.getInstance().getDataSource();
-    private final ProductCategoryDao productCategoryDao = ProductCategoryDaoJDBC.getInstance();
-    private final SupplierDao supplierDao = SupplierDaoJDBC.getInstance();
+    private final DataSource dataSource;
+    private final ProductCategoryDao productCategoryDao = DaoSelector.getProductCategoryDataStore();
+    private final SupplierDao supplierDao = DaoSelector.getSupplierDataStore();
 
-    public static ProductDaoJDBC getInstance() {
+    public static ProductDaoJDBC getInstance(String connectionProperties) {
         if (instance == null) {
-            instance = new ProductDaoJDBC();
+            instance = new ProductDaoJDBC(connectionProperties);
         }
         return instance;
     }
 
-    private ProductDaoJDBC() {
+    private ProductDaoJDBC(String connectionProperties) {
+        this.dataSource = ShopDatabaseManager.getInstance(connectionProperties).getDataSource();
     }
 
     @Override

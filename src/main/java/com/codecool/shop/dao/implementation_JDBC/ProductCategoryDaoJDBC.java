@@ -12,16 +12,17 @@ import java.util.List;
 public class ProductCategoryDaoJDBC implements ProductCategoryDao {
 
     private static ProductCategoryDaoJDBC instance = null;
-    private final DataSource dataSource = ShopDatabaseManager.getInstance().getDataSource();
+    private final DataSource dataSource;
 
-    public static ProductCategoryDaoJDBC getInstance() {
+    public static ProductCategoryDaoJDBC getInstance(String connectionProperties) {
         if (instance == null) {
-            instance = new ProductCategoryDaoJDBC();
+            instance = new ProductCategoryDaoJDBC(connectionProperties);
         }
         return instance;
     }
 
-    private ProductCategoryDaoJDBC() {
+    private ProductCategoryDaoJDBC(String connectionProperties) {
+        this.dataSource = ShopDatabaseManager.getInstance(connectionProperties).getDataSource();
     }
 
     @Override

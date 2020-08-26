@@ -13,8 +13,10 @@ public class ShopDatabaseManager {
     private static ShopDatabaseManager instance = null;
     private final Properties properties = new Properties();;
     private DataSource dataSource;
+    private final String connectionProperties;
 
-    public ShopDatabaseManager() {
+    public ShopDatabaseManager(String connectionProperties) {
+        this.connectionProperties = connectionProperties;
 
         try {
             setup();
@@ -30,9 +32,9 @@ public class ShopDatabaseManager {
         return dataSource;
     }
 
-    public static ShopDatabaseManager getInstance() {
+    public static ShopDatabaseManager getInstance(String connectionProperties) {
         if (instance == null) {
-            instance = new ShopDatabaseManager();
+            instance = new ShopDatabaseManager(connectionProperties);
         }
         return instance;
     }
@@ -40,7 +42,7 @@ public class ShopDatabaseManager {
     private void setup() throws SQLException, IOException {
 
         String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        String connectionPropertiesPath = rootPath + "connection.properties";
+        String connectionPropertiesPath = rootPath + connectionProperties;
 
         properties.load(new FileInputStream(connectionPropertiesPath));
 

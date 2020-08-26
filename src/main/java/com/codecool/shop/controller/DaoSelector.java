@@ -11,9 +11,11 @@ import com.codecool.shop.dao.interfaces.SupplierDao;
 
 public class DaoSelector {
 
-    static SupplierDao supplierDataStore = SupplierDaoJDBC.getInstance();
-    static ProductCategoryDao productCategoryDataStore = ProductCategoryDaoJDBC.getInstance();
-    static ProductDao productDataStore = ProductDaoJDBC.getInstance();
+    private final static String CONNECTION_PROPERTIES = "connection.properties";
+
+    static SupplierDao supplierDataStore = SupplierDaoJDBC.getInstance(CONNECTION_PROPERTIES);
+    static ProductCategoryDao productCategoryDataStore = ProductCategoryDaoJDBC.getInstance(CONNECTION_PROPERTIES);
+    static ProductDao productDataStore = ProductDaoJDBC.getInstance(CONNECTION_PROPERTIES);
     static OrderDao orderDataStore = OrderDaoMem.getInstance();
 
     public static SupplierDao getSupplierDataStore() {
