@@ -13,13 +13,17 @@ import java.util.List;
 public class SupplierDaoJDBC implements SupplierDao {
 
     private static SupplierDaoJDBC instance = null;
-    private final DataSource dataSource = ShopDatabaseManager.getInstance().getDataSource();
+    private final DataSource dataSource;
 
-    public static SupplierDaoJDBC getInstance() {
+    public static SupplierDaoJDBC getInstance(String connectionProperties) {
         if (instance == null) {
-            instance = new SupplierDaoJDBC();
+            instance = new SupplierDaoJDBC(connectionProperties);
         }
         return instance;
+    }
+
+    public SupplierDaoJDBC(String connectionProperties) {
+        this.dataSource = ShopDatabaseManager.getInstance(connectionProperties).getDataSource();;
     }
 
     @Override
