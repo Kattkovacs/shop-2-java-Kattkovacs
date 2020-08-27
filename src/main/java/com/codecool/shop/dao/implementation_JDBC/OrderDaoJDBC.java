@@ -79,6 +79,7 @@ public class OrderDaoJDBC implements OrderDao {
     @Override
     public List<Order> find(User user) {
         List<Order> orders = ReadOrders(user.getId());
+        //TODO Append line item list
         return orders;
     }
 
@@ -98,7 +99,6 @@ public class OrderDaoJDBC implements OrderDao {
         while (resultSet.next()) {
             Order order = getOrder(resultSet);
             orders.add(order);
-
         }
         return orders;
     }
