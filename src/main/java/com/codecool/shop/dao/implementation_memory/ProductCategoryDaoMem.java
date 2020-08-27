@@ -24,6 +24,9 @@ public class ProductCategoryDaoMem implements ProductCategoryDao {
 
     @Override
     public void add(ProductCategory category) {
+        if(category.getDepartment() == null || category.getName() == null || category.getDescription() == null){
+            throw new IllegalArgumentException();
+        }
         category.setId(data.size() + 1);
         data.add(category);
     }
