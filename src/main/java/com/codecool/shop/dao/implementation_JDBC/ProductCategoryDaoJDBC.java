@@ -27,6 +27,11 @@ public class ProductCategoryDaoJDBC implements ProductCategoryDao {
 
     @Override
     public void add(ProductCategory productCategory) {
+        if (productCategory.getName() == null ||
+                productCategory.getDescription() == null ||
+                productCategory.getDepartment() == null) {
+            throw new IllegalArgumentException();
+        }
         try (Connection conn = dataSource.getConnection()) {
             String sql = "INSERT INTO product_category (name, description, department) VALUES (?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -54,8 +59,8 @@ public class ProductCategoryDaoJDBC implements ProductCategoryDao {
             }
             ProductCategory productCategory = new ProductCategory(
                     resultSet.getString("name"),
-                    resultSet.getString("description"),
-                    resultSet.getString("department")
+                    resultSet.getString("department"),
+                    resultSet.getString("description")
             );
             productCategory.setId(resultSet.getInt("id"));
             return productCategory;

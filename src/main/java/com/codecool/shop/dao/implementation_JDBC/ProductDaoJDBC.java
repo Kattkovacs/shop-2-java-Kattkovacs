@@ -35,13 +35,16 @@ public class ProductDaoJDBC implements ProductDao {
 
     @Override
     public void add(Product product) {
+        if (product.getDefaultPrice() == 0.0f) throw new IllegalArgumentException();
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "INSERT INTO product (name, description, default_price, default_currency) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO product (name, description, default_price, default_currency, supplier_id, product_category_id) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, product.getName());
             statement.setString(2, product.getDescription());
             statement.setFloat(3, product.getDefaultPrice());
             statement.setString(4, String.valueOf(product.getDefaultCurrency()));
+            statement.setInt(5, product.getSupplier().getId());
+            statement.setInt(6, product.getProductCategory().getId());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
