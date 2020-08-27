@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Order {
+
+    private int id;
     private Map<Integer, LineItem> lineItemMap = new HashMap<>();
     private UserDetails userDetails;
 
@@ -16,6 +18,14 @@ public class Order {
         } else {
             lineItemMap.get(id).incrementQuantity();
         }
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void removeFromCart(Integer productId) {

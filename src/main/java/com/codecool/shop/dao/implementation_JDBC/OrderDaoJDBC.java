@@ -1,7 +1,9 @@
 package com.codecool.shop.dao.implementation_JDBC;
 
+import com.codecool.shop.controller.DaoSelector;
 import com.codecool.shop.dao.ShopDatabaseManager;
 import com.codecool.shop.dao.interfaces.OrderDao;
+import com.codecool.shop.dao.interfaces.ProductDao;
 import com.codecool.shop.model.*;
 
 import javax.sql.DataSource;
@@ -80,7 +82,40 @@ public class OrderDaoJDBC implements OrderDao {
     public List<Order> find(User user) {
         List<Order> orders = ReadOrders(user.getId());
         //TODO Append line item list
+        collectLineItems(orders);
         return orders;
+    }
+
+    private void collectLineItems(List<Order> orders) {
+        for (Order order: orders) {
+            queryLineItemsForOrder(order);
+        }
+    }
+
+    private void queryLineItemsForOrder(Order order) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT * FROM order_details WHERE order_id = ?;";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, order.getId());
+            appendLineItemsToOrder(statement.executeQuery(), order);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while reading db: " + e);
+        }
+    }
+
+    private void appendLineItemsToOrder(ResultSet resultSet, Order order) throws SQLException {
+        while (resultSet.next()) {
+            LineItem lineItem = new LineItem(
+                    getProduct(resultSet.getInt("product_id")),
+                    order
+            );
+            order.addToCart(lineItem);
+        }
+    }
+
+    private Product getProduct(int product_id) {
+        ProductDao productDao = DaoSelector.getProductDataStore();
+        return productDao.find(product_id);
     }
 
     private List<Order> ReadOrders(int userId) {
@@ -119,6 +154,7 @@ public class OrderDaoJDBC implements OrderDao {
         userDetails.setInputZip2(resultSet.getInt("zip2"));
         Order order = new Order();
         order.setUserDetails(userDetails);
+        order.setId(resultSet.getInt("id"));
         return order;
     }
 
