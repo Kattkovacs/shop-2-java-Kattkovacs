@@ -28,6 +28,9 @@ public class SupplierDaoJDBC implements SupplierDao {
 
     @Override
     public void add(Supplier supplier) {
+        if (supplier.getName() == null || supplier.getDescription() == null) {
+            throw new IllegalArgumentException();
+        }
         try (Connection conn = dataSource.getConnection()) {
             String sql = "INSERT INTO supplier (name, description) VALUES (?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

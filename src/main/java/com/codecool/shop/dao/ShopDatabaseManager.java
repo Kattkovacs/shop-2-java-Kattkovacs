@@ -3,6 +3,7 @@ package com.codecool.shop.dao;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -40,12 +41,9 @@ public class ShopDatabaseManager {
     }
 
     private void setup() throws SQLException, IOException {
-
-        String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        String connectionPropertiesPath = rootPath + connectionProperties;
-
-        properties.load(new FileInputStream(connectionPropertiesPath));
-
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource(connectionProperties).getFile());
+        properties.load(new FileInputStream(file.getAbsolutePath()));
     }
 
     private DataSource connect() throws SQLException {
