@@ -2,12 +2,12 @@ package com.codecool.shop.dao.implementation_JDBC;
 
 import com.codecool.shop.dao.ShopDatabaseManager;
 import com.codecool.shop.dao.interfaces.OrderDao;
-import com.codecool.shop.model.LineItem;
-import com.codecool.shop.model.Order;
-import com.codecool.shop.model.User;
+import com.codecool.shop.model.*;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderDaoJDBC implements OrderDao {
 
@@ -77,8 +77,49 @@ public class OrderDaoJDBC implements OrderDao {
     }
 
     @Override
-    public Order find(User user) {
-        return null;
+    public List<Order> find(User user) {
+        List<Order> orders = ReadOrders(user.getId());
+        return orders;
+    }
+
+    private List<Order> ReadOrders(int userId) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT * FROM \"order\" WHERE user_id = ?;";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, userId);
+            return getOrders(statement.executeQuery());
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while reading db: " + e);
+        }
+    }
+
+    private List<Order> getOrders(ResultSet resultSet) throws SQLException {
+        List<Order> orders = new ArrayList<>();
+        while (resultSet.next()) {
+            Order order = getOrder(resultSet);
+            orders.add(order);
+
+        }
+        return orders;
+    }
+
+    private Order getOrder(ResultSet resultSet) throws SQLException {
+        UserDetails userDetails = new UserDetails();
+        userDetails.setFirstName(resultSet.getString("first_name"));
+        userDetails.setLastName(resultSet.getString("last_name"));
+        userDetails.setInputEmail(resultSet.getString("email"));
+        userDetails.setInputPhone(resultSet.getString("phone"));
+        userDetails.setInputAddress(resultSet.getString("address"));
+        userDetails.setInputCity(resultSet.getString("city"));
+        userDetails.setInputState(resultSet.getString("state"));
+        userDetails.setInputZip(resultSet.getInt("zip"));
+        userDetails.setInputAddress2(resultSet.getString("address2"));
+        userDetails.setInputCity2(resultSet.getString("city2"));
+        userDetails.setInputState2(resultSet.getString("state2"));
+        userDetails.setInputZip2(resultSet.getInt("zip2"));
+        Order order = new Order();
+        order.setUserDetails(userDetails);
+        return order;
     }
 
     @Override
