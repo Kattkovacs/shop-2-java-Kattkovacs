@@ -1,10 +1,7 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.interfaces.OrderDao;
-import com.codecool.shop.dao.interfaces.ProductCategoryDao;
-import com.codecool.shop.dao.interfaces.ProductDao;
-import com.codecool.shop.dao.interfaces.SupplierDao;
+import com.codecool.shop.dao.interfaces.*;
 import com.codecool.shop.model.LineItem;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.json.LineItemUpdatesJson;
@@ -26,7 +23,7 @@ public class CartController extends HttpServlet {
     SupplierDao supplierDataStore = DaoSelector.getSupplierDataStore();
     ProductCategoryDao productCategoryDataStore = DaoSelector.getProductCategoryDataStore();
     ProductDao productDataStore = DaoSelector.getProductDataStore();
-    OrderDao orderCacheStore = DaoSelector.getOrderCacheStore();
+    OrderCacheDao orderCacheStore = DaoSelector.getOrderCacheStore();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

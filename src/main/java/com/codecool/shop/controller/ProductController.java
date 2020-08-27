@@ -1,9 +1,6 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.dao.interfaces.OrderDao;
-import com.codecool.shop.dao.interfaces.ProductCategoryDao;
-import com.codecool.shop.dao.interfaces.ProductDao;
-import com.codecool.shop.dao.interfaces.SupplierDao;
+import com.codecool.shop.dao.interfaces.*;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
@@ -25,7 +22,7 @@ public class ProductController extends HttpServlet {
     SupplierDao supplierDataStore = DaoSelector.getSupplierDataStore();
     ProductCategoryDao productCategoryDataStore = DaoSelector.getProductCategoryDataStore();
     ProductDao productDataStore = DaoSelector.getProductDataStore();
-    OrderDao orderCacheStore = DaoSelector.getOrderCacheStore();
+    OrderCacheDao orderCacheStore = DaoSelector.getOrderCacheStore();
 
     List<Product> products;
     String filterName;

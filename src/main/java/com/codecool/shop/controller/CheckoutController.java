@@ -1,6 +1,7 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.dao.interfaces.OrderCacheDao;
 import com.codecool.shop.dao.interfaces.OrderDao;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.UserDetails;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @WebServlet(urlPatterns = {"/checkout"})
 public class CheckoutController extends HttpServlet {
 
-    OrderDao orderCacheStore = DaoSelector.getOrderCacheStore();
+    OrderCacheDao orderCacheStore = DaoSelector.getOrderCacheStore();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

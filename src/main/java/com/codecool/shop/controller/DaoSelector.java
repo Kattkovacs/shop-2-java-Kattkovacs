@@ -14,7 +14,7 @@ public class DaoSelector {
     static OrderDao orderDataStore = OrderDaoJDBC.getInstance(CONNECTION_PROPERTIES);
     static UserDao userDataStore = UserDaoJDBC.getInstance(CONNECTION_PROPERTIES);
 
-    static OrderDao orderCacheStore = OrderDaoCache.getInstance();
+    static OrderCacheDao orderCacheStore = OrderDaoCache.getInstance();
 
     public static SupplierDao getSupplierDataStore() {
         return supplierDataStore;
@@ -28,7 +28,11 @@ public class DaoSelector {
         return productDataStore;
     }
 
-    public static OrderDao getOrderCacheStore() {
+    public static OrderDao getOrderDataStore() {
+        return orderDataStore;
+    }
+
+    public static OrderCacheDao getOrderCacheStore() {
         return orderCacheStore;
     }
 

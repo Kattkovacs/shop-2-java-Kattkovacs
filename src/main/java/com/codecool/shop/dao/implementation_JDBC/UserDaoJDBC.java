@@ -44,18 +44,20 @@ public class UserDaoJDBC implements UserDao {
     @Override
     public User find(String email) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT first_name, last_name, email FROM \"user\" WHERE email = ?;";
+            String sql = "SELECT id, first_name, last_name, email FROM \"user\" WHERE email = ?;";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 return null;
             }
-            return new User(
+            User user = new User(
                     resultSet.getString("first_name"),
                     resultSet.getString("last_name"),
                     resultSet.getString("email")
             );
+            user.setId(resultSet.getInt("id"));
+            return user;
         } catch (SQLException e) {
             throw new RuntimeException("Error while reading db: " + e);
         }
