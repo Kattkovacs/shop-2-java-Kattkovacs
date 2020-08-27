@@ -10,7 +10,10 @@ import org.junit.jupiter.api.BeforeEach;
 
 import javax.sql.DataSource;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.*;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,9 +26,15 @@ public class SupplierDaoJDBCTest {
 
     @BeforeEach
     void setup() {
+        resetDatabase();
         supplierDao = SupplierDaoJDBC.getInstance(CONNECTION_TEST_PROPERTIES);
         supplierOne = new Supplier("Test Supplier One", "Test Supplier One Description");
         supplierTwo = new Supplier("Test Supplier Two", "Test Supplier Two Description");
+    }
+
+    @Test
+    public void add_addNewSupplier_doesNotThrowAnException() {
+        assertDoesNotThrow(() -> supplierDao.add(supplierOne));
     }
 
     @Test
@@ -36,118 +45,37 @@ public class SupplierDaoJDBCTest {
         assertThrows(IllegalArgumentException.class, () -> supplierDao.add(supplierFour));
     }
 
-//    @AfterAll
-//    static void resetDatabase() {
-//        ShopDatabaseManager shopDatabaseManager = ShopDatabaseManager.getInstance(CONNECTION_TEST_PROPERTIES);
-//        DataSource dataSource = shopDatabaseManager.getDataSource();
-//        try (Connection conn = dataSource.getConnection()) {
-//            String sql = "ALTER TABLE IF EXISTS ONLY public.supplier DROP CONSTRAINT IF EXISTS supplier_pk CASCADE;\n" +
-//                    "ALTER TABLE IF EXISTS ONLY public.product_category DROP CONSTRAINT IF EXISTS product_category_pk CASCADE;\n" +
-//                    "ALTER TABLE IF EXISTS ONLY public.product DROP CONSTRAINT IF EXISTS supplier_id_fk CASCADE;\n" +
-//                    "ALTER TABLE IF EXISTS ONLY public.product DROP CONSTRAINT IF EXISTS product_category_id_fk CASCADE;\n" +
-//                    "ALTER TABLE IF EXISTS ONLY public.product DROP CONSTRAINT IF EXISTS product_pk CASCADE;\n" +
-//                    "ALTER TABLE IF EXISTS ONLY public.user DROP CONSTRAINT IF EXISTS user_pk CASCADE;\n" +
-//                    "ALTER TABLE IF EXISTS ONLY public.order DROP CONSTRAINT IF EXISTS order_pk CASCADE;\n" +
-//                    "ALTER TABLE IF EXISTS ONLY public.order_details DROP CONSTRAINT IF EXISTS order_details_pk CASCADE;\n" +
-//                    "\n" +
-//                    "\n" +
-//                    "DROP TABLE IF EXISTS public.supplier;\n" +
-//                    "CREATE TABLE public.supplier (\n" +
-//                    "                                id serial NOT NULL\n" +
-//                    "                                   constraint supplier_pk\n" +
-//                    "                                       primary key,\n" +
-//                    "                                name text NOT NULL,\n" +
-//                    "                                description text NOT NULL\n" +
-//                    "                             );\n" +
-//                    "\n" +
-//                    "\n" +
-//                    "DROP TABLE IF EXISTS public.product_category;\n" +
-//                    "CREATE TABLE public.product_category (\n" +
-//                    "                                 id serial NOT NULL\n" +
-//                    "                                     constraint product_category_pk\n" +
-//                    "                                         primary key,\n" +
-//                    "                                 name text NOT NULL,\n" +
-//                    "                                 description text NOT NULL,\n" +
-//                    "                                 department text NOT NULL\n" +
-//                    ");\n" +
-//                    "\n" +
-//                    "DROP TABLE IF EXISTS public.product;\n" +
-//                    "CREATE TABLE public.product (\n" +
-//                    "                                 id serial NOT NULL\n" +
-//                    "                                     constraint product_pk\n" +
-//                    "                                         primary key,\n" +
-//                    "                                 name text NOT NULL,\n" +
-//                    "                                 description text NOT NULL,\n" +
-//                    "                                 default_price float8 NOT NULL,\n" +
-//                    "                                 default_currency text NOT NULL,\n" +
-//                    "                                 supplier_id integer NOT NULL\n" +
-//                    "                                     constraint supplier_id_fk\n" +
-//                    "                                         references supplier\n" +
-//                    "                                            on delete cascade,\n" +
-//                    "                                 product_category_id integer NOT NULL\n" +
-//                    "                                     constraint product_category_id_fk\n" +
-//                    "                                         references product_category\n" +
-//                    "                                            on delete cascade\n" +
-//                    ");\n" +
-//                    "\n" +
-//                    "DROP TABLE IF EXISTS public.user;\n" +
-//                    "CREATE TABLE public.user (\n" +
-//                    "                                id serial NOT NULL\n" +
-//                    "                                   constraint user_pk\n" +
-//                    "                                       primary key,\n" +
-//                    "                                first_name text NOT NULL,\n" +
-//                    "                                last_name text NOT NULL,\n" +
-//                    "                                email text NOT NULL unique,\n" +
-//                    "                                password text NOT NULL\n" +
-//                    ");\n" +
-//                    "\n" +
-//                    "\n" +
-//                    "DROP TABLE IF EXISTS public.order;\n" +
-//                    "CREATE TABLE public.order (\n" +
-//                    "                              id serial NOT NULL\n" +
-//                    "                                  constraint order_pk\n" +
-//                    "                                      primary key,\n" +
-//                    "                              user_id integer\n" +
-//                    "                                  constraint user_id_fk\n" +
-//                    "                                      references \"user\"\n" +
-//                    "                                      on delete cascade,\n" +
-//                    "                              total_order_price float8 NOT NULL,\n" +
-//                    "                              first_name text NOT NULL,\n" +
-//                    "                              last_name text NOT NULL,\n" +
-//                    "                              email text NOT NULL,\n" +
-//                    "                              phone text NOT NULL,\n" +
-//                    "                              address text NOT NULL,\n" +
-//                    "                              city text NOT NULL,\n" +
-//                    "                              state text NOT NULL,\n" +
-//                    "                              zip int NOT NULL,\n" +
-//                    "                              address2 text NOT NULL,\n" +
-//                    "                              city2 text NOT NULL,\n" +
-//                    "                              state2 text NOT NULL,\n" +
-//                    "                              zip2 int NOT NULL\n" +
-//                    "\n" +
-//                    ");\n" +
-//                    "\n" +
-//                    "DROP TABLE IF EXISTS public.order_details;\n" +
-//                    "CREATE TABLE public.order_details (\n" +
-//                    "                                id serial NOT NULL\n" +
-//                    "                                   constraint order_details_pk\n" +
-//                    "                                       primary key,\n" +
-//                    "                                order_id integer NOT NULL\n" +
-//                    "                                    constraint order_id_fk\n" +
-//                    "                                        references \"order\"\n" +
-//                    "                                            on delete cascade,\n" +
-//                    "                                product_id integer NOT NULL\n" +
-//                    "                                    constraint product_id_fk\n" +
-//                    "                                        references product\n" +
-//                    "                                            on delete cascade,\n" +
-//                    "                                quantity integer NOT NULL,\n" +
-//                    "                                total_product_price float8 NOT NULL\n" +
-//                    ");";
-//            PreparedStatement statement = conn.prepareStatement(sql);
-//            statement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException("Error while reading db: " + e);
-//        }
-//    }
+    @Test
+    public void find_findFirstId_returnTestSupplierOne() {
+        supplierDao.add(supplierOne);
+        Supplier supplier = supplierDao.find(1);
+        assertEquals(supplierOne.getName(), supplier.getName());
+        assertEquals(supplierOne.getDescription(), supplier.getDescription());
+    }
+
+
+    @Test
+    public void find_findSecondId_returnTestSupplierTwo() {
+        supplierDao.add(supplierOne);
+        supplierDao.add(supplierTwo);
+        Supplier supplier = supplierDao.find(2);
+        assertEquals(supplierTwo.getName(), supplier.getName());
+        assertEquals(supplierTwo.getDescription(), supplier.getDescription());
+    }
+
+
+    @AfterAll
+    static void resetDatabase() {
+        ShopDatabaseManager shopDatabaseManager = ShopDatabaseManager.getInstance(CONNECTION_TEST_PROPERTIES);
+        DataSource dataSource = shopDatabaseManager.getDataSource();
+
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "DELETE FROM supplier; ALTER SEQUENCE supplier_id_seq RESTART;";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while reading db: " + e);
+        }
+    }
 
 }
