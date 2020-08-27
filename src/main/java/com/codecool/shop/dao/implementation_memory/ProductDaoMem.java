@@ -27,6 +27,9 @@ public class ProductDaoMem implements ProductDao {
 
     @Override
     public void add(Product product) {
+        if(product.getDefaultPrice() == 0.0f){
+            throw new IllegalArgumentException();
+        }
         product.setId(data.size() + 1);
         data.add(product);
     }
