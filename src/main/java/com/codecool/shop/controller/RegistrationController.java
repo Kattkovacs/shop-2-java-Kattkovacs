@@ -14,23 +14,6 @@ import java.io.IOException;
 public class RegistrationController extends HttpServlet {
 
 
-//    @Override
-//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        Gson gson = new Gson();
-//        String jsonString = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-//        UserDetails userDetails = gson.fromJson(jsonString, UserDetails.class);
-//
-//        TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
-//        WebContext context = new WebContext(req, resp, req.getServletContext());
-//        context.setVariable("userDetails", userDetails);
-//
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        engine.process("registration.html", context, resp.getWriter());
-//    }
 
     @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
