@@ -128,13 +128,29 @@ export let dataHandler = {
             dataHandler._data = response;
             callback(response).then(
                 function(data) {
-                    dom.openResultPage(data)
+                    dom.openResultPage(data, "Payment details")
                 }).catch(function(error){
                     alert(error);
                 }
             )
         });
     },
+
+    sendRegistration: function (callback, formData) {
+        let url = `/registration`;
+        dataHandler._post(url, formData, (response) => {
+            dataHandler._data = response;
+            callback(response).then(
+                function(data) {
+                    dom.openResultPage(data, "Registration details")
+                }).catch(function(error){
+                    alert(error);
+                }
+            )
+        });
+    },
+
+
 
     registration: function (callback) {
         let url = `/registration`;

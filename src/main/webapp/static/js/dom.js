@@ -240,6 +240,7 @@ export let dom = {
         modal.querySelector(".modal-title").innerText = "Please give your registration details: ";
         let saveButton = document.querySelector(".save-button");
         saveButton.innerText = "Register";
+        $('#modal').modal();
         saveButton.addEventListener('click',
             function eventListener() {
                 saveButton.removeEventListener('click', eventListener)
@@ -250,7 +251,7 @@ export let dom = {
                 formData.forEach(function(value, key){
                     object[key] = value;
                 });
-                dataHandler.pay(
+                dataHandler.sendRegistration(
                     dom.convertPage,
                     object
                 )
@@ -258,11 +259,11 @@ export let dom = {
         )
     },
 
-    openResultPage: function(data) {
+    openResultPage: function(data, title) {
         dom.activateModal();
         let modal = document.querySelector("#modal");
         modal.querySelector(".modal-body").innerHTML = data;
-        modal.querySelector(".modal-title").innerText = "Payment details";
+        modal.querySelector(".modal-title").innerText = title;
         let saveButton = document.querySelector(".save-button");
         saveButton.innerText = "Ok";
         saveButton.addEventListener('click',
