@@ -5,6 +5,7 @@ import com.codecool.shop.dao.interfaces.UserDao;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.User;
 import com.codecool.shop.model.UserDetails;
+import com.codecool.shop.util.Password;
 import com.google.gson.Gson;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -27,7 +28,11 @@ public class RegistrationController extends HttpServlet {
         String jsonString = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         User user = gson.fromJson(jsonString, User.class);
         UserDao userDao = DaoSelector.getUserDataStore();
-        userDao.add(user, user.getPassword());
+        try {
+            userDao.add(user, Password.getSaltedHash(user.getPassword()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         context.setVariable("user", user);
         engine.process("successfulRegistration.html", context, resp.getWriter());
     }
