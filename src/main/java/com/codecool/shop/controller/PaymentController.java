@@ -6,16 +6,20 @@ import com.codecool.shop.dao.interfaces.OrderCacheDao;
 import com.codecool.shop.dao.interfaces.OrderDao;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.UserDetails;
+import com.codecool.shop.util.Email;
+import com.codecool.shop.util.EmailTitles;
 import com.google.gson.Gson;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.StringWriter;
 
 @WebServlet(urlPatterns = {"/payment"})
 public class PaymentController extends HttpServlet {
@@ -31,9 +35,17 @@ public class PaymentController extends HttpServlet {
         Order order = orderCacheStore.find(req.getSession().getId());
         UserDetails userDetails = order.getUserDetails();
         context.setVariable("userDetails", userDetails);
-        engine.process("success.html", context, resp.getWriter());
+        context.setVariable("order", order);
         orderDataStore.addOrder(order);
         orderCacheStore.remove(req.getSession().getId());
+        StringWriter emailBody = new StringWriter();
+        engine.process("email/order.html", context, emailBody);
+        try {
+            Email.sendEmail(userDetails.getInputEmail(), emailBody.toString(), EmailTitles.ORDER_CONFIRM.toString());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        engine.process("success.html", context, resp.getWriter());
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
