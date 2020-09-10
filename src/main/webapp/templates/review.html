@@ -1,81 +1,83 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<table class="table">
-    <thead class="thead-dark">
-    <tr>
-        <th scope="col">Data type</th>
-        <th scope="col">Your data</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>Name</td>
-        <td th:text="${userDetails.getFirstName() + ' ' + userDetails.getLastName()}"></td>
-    </tr>
-    <tr>
-        <td>Email</td>
-        <td th:text="${userDetails.getInputEmail()}"></td>
-    </tr>
-    <tr>
-        <td>Phone number</td>
-        <td th:text="${userDetails.getInputPhone()}"></td>
-    </tr>
-    <tr>
-        <td>Billing address - Address</td>
-        <td th:text="${userDetails.getInputAddress()}"></td>
-    </tr>
-    <tr>
-        <td>Billing address - City</td>
-        <td th:text="${userDetails.getInputCity()}"></td>
-    </tr>
-    <tr>
-        <td>Billing address - State</td>
-        <td th:text="${userDetails.getInputState()}"></td>
-    </tr>
-    <tr>
-        <td>Billing address - ZIP</td>
-        <td th:text="${userDetails.getInputZip()}"></td>
-    </tr>
-    <tr>
-        <td>Shipping address - Address</td>
-        <td th:text="${userDetails.getInputAddress2()}"></td>
-    </tr>
-    <tr>
-        <td>Shipping address - City</td>
-        <td th:text="${userDetails.getInputCity2()}"></td>
-    </tr>
-    <tr>
-        <td>Shipping address - State</td>
-        <td th:text="${userDetails.getInputState2()}"></td>
-    </tr>
-    <tr>
-        <td>Shipping address - ZIP</td>
-        <td th:text="${userDetails.getInputZip2()}"></td>
-    </tr>
-    </tbody>
-</table>
-<h4>Your cart</h4>
-<table class="table">
-    <thead class="thead-dark">
+<div th:fragment="copy">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Data type</th>
+            <th scope="col">Your data</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Name</td>
+            <td th:text="${userDetails.getFirstName() + ' ' + userDetails.getLastName()}"></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td th:text="${userDetails.getInputEmail()}"></td>
+        </tr>
+        <tr>
+            <td>Phone number</td>
+            <td th:text="${userDetails.getInputPhone()}"></td>
+        </tr>
+        <tr>
+            <td>Billing address - Address</td>
+            <td th:text="${userDetails.getInputAddress()}"></td>
+        </tr>
+        <tr>
+            <td>Billing address - City</td>
+            <td th:text="${userDetails.getInputCity()}"></td>
+        </tr>
+        <tr>
+            <td>Billing address - State</td>
+            <td th:text="${userDetails.getInputState()}"></td>
+        </tr>
+        <tr>
+            <td>Billing address - ZIP</td>
+            <td th:text="${userDetails.getInputZip()}"></td>
+        </tr>
+        <tr>
+            <td>Shipping address - Address</td>
+            <td th:text="${userDetails.getInputAddress2()}"></td>
+        </tr>
+        <tr>
+            <td>Shipping address - City</td>
+            <td th:text="${userDetails.getInputCity2()}"></td>
+        </tr>
+        <tr>
+            <td>Shipping address - State</td>
+            <td th:text="${userDetails.getInputState2()}"></td>
+        </tr>
+        <tr>
+            <td>Shipping address - ZIP</td>
+            <td th:text="${userDetails.getInputZip2()}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <h4>Your cart</h4>
+    <table class="table">
+        <thead class="thead-dark">
         <tr>
             <th scope="col">Product name</th>
             <th scope="col">Quantity</th>
             <th scope="col">Price</th>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         <tr th:each="lineItem,iterStat : ${order.getLineItemList()}">
             <td th:text="${lineItem.getProduct().getName()}"></td>
             <td th:text="${lineItem.getQuantity()}"></td>
             <td th:text="${lineItem.getTotalProductPrice()}"></td>
         </tr>
-    </tbody>
-</table>
-<table class="table">
-    <thead class="thead-dark">
-    <tr>
-        <th scope="col">Total Price:</th>
-        <th scope="col" th:text="${order.getTotalOrderPrice()}"></th>
-    </tr>
-    </thead>
-</table>
+        </tbody>
+    </table>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Total Price:</th>
+            <th scope="col" th:text="${order.getTotalOrderPrice()}"></th>
+        </tr>
+        </thead>
+    </table>
+</div>
