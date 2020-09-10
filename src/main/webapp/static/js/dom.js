@@ -9,6 +9,7 @@ export let dom = {
         dom.addActionToAddCheckoutButton();
         dom.sleepModal();
         dom.addActionToCartLink();
+        dom.addActionToRegistrationButton();
     },
 
     addActionToAddCartButtons: function() {
@@ -232,11 +233,37 @@ export let dom = {
         )
     },
 
-    openResultPage: function(data) {
+    openRegistrationPage : function(data){
         dom.activateModal();
         let modal = document.querySelector("#modal");
         modal.querySelector(".modal-body").innerHTML = data;
-        modal.querySelector(".modal-title").innerText = "Payment details";
+        modal.querySelector(".modal-title").innerText = "Please give your registration details: ";
+        let saveButton = document.querySelector(".save-button");
+        saveButton.innerText = "Register";
+        $('#modal').modal();
+        saveButton.addEventListener('click',
+            function eventListener() {
+                saveButton.removeEventListener('click', eventListener)
+                dom.sleepModal();
+                let form = document.getElementById('form');
+                let formData = new FormData(form);
+                let object = {};
+                formData.forEach(function(value, key){
+                    object[key] = value;
+                });
+                dataHandler.sendRegistration(
+                    dom.convertPage,
+                    object
+                )
+            }
+        )
+    },
+
+    openResultPage: function(data, title) {
+        dom.activateModal();
+        let modal = document.querySelector("#modal");
+        modal.querySelector(".modal-body").innerHTML = data;
+        modal.querySelector(".modal-title").innerText = title;
         let saveButton = document.querySelector(".save-button");
         saveButton.innerText = "Ok";
         saveButton.addEventListener('click',
@@ -258,5 +285,15 @@ export let dom = {
             shape.classList.remove("animate");
         })
 
+    },
+
+    addActionToRegistrationButton: function () {
+        let link = document.querySelector("#navbarRegistration");
+        link.addEventListener('click', dataHandler.registration.bind(
+            event,
+            dom.convertPage,
+        ));
     }
+
+
 }

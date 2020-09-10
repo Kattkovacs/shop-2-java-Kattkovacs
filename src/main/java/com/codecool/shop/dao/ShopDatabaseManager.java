@@ -12,7 +12,7 @@ import java.util.Properties;
 public class ShopDatabaseManager {
 
     private static ShopDatabaseManager instance = null;
-    private final Properties properties = new Properties();;
+    private final Properties properties = new Properties();
     private DataSource dataSource;
     private final String connectionProperties;
 

@@ -54,7 +54,8 @@ public class UserDaoJDBC implements UserDao {
             User user = new User(
                     resultSet.getString("first_name"),
                     resultSet.getString("last_name"),
-                    resultSet.getString("email")
+                    resultSet.getString("email"),
+                    resultSet.getString("password")
             );
             user.setId(resultSet.getInt("id"));
             return user;

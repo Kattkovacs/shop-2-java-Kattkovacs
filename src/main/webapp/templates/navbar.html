@@ -4,7 +4,8 @@
 <body>
 <div th:fragment="copy">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/"> <img class="navbar-icon mx-2" src="static/img/logo.png" alt=""> Ice Cold Cappuccino</a>
+        <a class="navbar-brand" href="/"> <img class="navbar-icon mx-2" src="static/img/logo.png" alt=""> Ice Cold
+            Cappuccino</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
                 aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -34,25 +35,39 @@
                     </div>
                 </li>
             </ul>
-            <span class="cart-text">
-                <a class="cart-list" href="/cart">
-                    <div class="d-flex align-items-center">
-                        <div class="path justify-content-center">
-                            <img id="elem" class="shape trail navbar-icon" src="static/img/shopping-cart.png">
-                            <div class="cart-items">
-                                <div class="my-cart mx-1 d-flex align-items-center">
-                                    My Cart
-                                </div>
-                                <div class="cart-circle">
-                                    <p class="cart-size" th:text="${order.countLineItems()}">
-                                         0
-                                    </p>
+
+            <div class="d-flex align-items-center">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" id="navbarRegistration"
+                           aria-haspopup="true" aria-expanded="false">Registration</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="navbarLogin"
+                           aria-haspopup="true" aria-expanded="false">Login</a>
+                    </li>
+                </ul>
+
+                <span class="cart-text">
+                    <a class="cart-list" href="/cart">
+                        <div class="d-flex align-items-center">
+                            <div class="path justify-content-center">
+                                <img id="elem" class="shape trail navbar-icon" src="static/img/shopping-cart.png">
+                                <div class="cart-items">
+                                    <div class="my-cart mx-1 d-flex align-items-center">
+                                        My Cart
+                                    </div>
+                                    <div class="cart-circle">
+                                        <p class="cart-size" th:text="${order.countLineItems()}">
+                                             0
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </span>
+                    </a>
+                </span>
+            </div>
         </div>
     </nav>
 </div>
