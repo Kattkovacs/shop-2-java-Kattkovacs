@@ -10,6 +10,7 @@ export let dom = {
         dom.sleepModal();
         dom.addActionToCartLink();
         dom.addActionToRegistrationButton();
+        dom.addActionToLoginButton();
     },
 
     addActionToAddCartButtons: function() {
@@ -293,7 +294,40 @@ export let dom = {
             event,
             dom.convertPage,
         ));
+    },
+
+
+    addActionToLoginButton: function() {
+        let link = document.querySelector("#navbarLogin");
+        link.addEventListener('click', dataHandler.login.bind(
+            event,
+            dom.convertPage,
+        ));
+    },
+
+    openLoginPage : function(data){
+        dom.activateModal();
+        let modal = document.querySelector("#modal");
+        modal.querySelector(".modal-body").innerHTML = data;
+        modal.querySelector(".modal-title").innerText = "Please give your login credentials: ";
+        let saveButton = document.querySelector(".save-button");
+        saveButton.innerText = "Login";
+        $('#modal').modal();
+        saveButton.addEventListener('click',
+            function eventListener() {
+                saveButton.removeEventListener('click', eventListener)
+                dom.sleepModal();
+                let form = document.getElementById('form');
+                let formData = new FormData(form);
+                let object = {};
+                formData.forEach(function(value, key){
+                    object[key] = value;
+                });
+                dataHandler.sendLogin(
+                    dom.convertPage,
+                    object
+                )
+            }
+        )
     }
-
-
 }

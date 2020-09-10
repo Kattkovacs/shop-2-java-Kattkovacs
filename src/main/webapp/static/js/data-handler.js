@@ -164,5 +164,32 @@ export let dataHandler = {
                 }
             )
         });
-    }
+    },
+
+    login: function (callback) {
+        let url = `/login`;
+        dataHandler._get(url, (response) => {
+            dataHandler._data = response;
+            callback(response).then(
+                function(data) {
+                    dom.openLoginPage(data)
+                }).catch(function(error){
+                    alert(error);
+                }
+            )
+        });
+    },
+    sendLogin: function (callback, formData) {
+        let url = `/login`;
+        dataHandler._post(url, formData, (response) => {
+            dataHandler._data = response;
+            callback(response).then(
+                function(data) {
+                    dom.openResultPage(data, "Login details")
+                }).catch(function(error){
+                    alert(error);
+                }
+            )
+        });
+    },
 }
