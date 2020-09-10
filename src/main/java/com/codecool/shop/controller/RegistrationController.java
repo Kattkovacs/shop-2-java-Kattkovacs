@@ -5,16 +5,21 @@ import com.codecool.shop.dao.interfaces.UserDao;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.User;
 import com.codecool.shop.model.UserDetails;
+import com.codecool.shop.util.Email;
 import com.codecool.shop.util.Password;
 import com.google.gson.Gson;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import org.thymeleaf.context.WebContext;
+
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/registration"})
@@ -31,6 +36,16 @@ public class RegistrationController extends HttpServlet {
         try {
             userDao.add(user, Password.getSaltedHash(user.getPassword()));
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Context contextEmail = new Context();
+        StringWriter writer = new StringWriter();
+        contextEmail.setVariable("name", user.getFirstName() + " " + user.getLastName());
+        engine.process("email/welcome.html", contextEmail, writer);
+        System.out.println(writer.toString());
+        try {
+            Email.sendEmail(user.getEmail(), writer.toString(), "Welcome to CodeCoolShop");
+        } catch (MessagingException e) {
             e.printStackTrace();
         }
         context.setVariable("user", user);
